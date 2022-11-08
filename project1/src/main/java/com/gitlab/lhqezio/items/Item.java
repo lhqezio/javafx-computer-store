@@ -12,16 +12,20 @@ public abstract class Item {
         this.id = id;
         this.description = description;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     };
-    public String getManufacturer(){
+
+    public String getManufacturer() {
         return manufacturer;
     };
-    public String getID(){
+
+    public String getID() {
         return id;
     };
-    public String getDescription(){
+
+    public String getDescription() {
         return description;
     };
 }

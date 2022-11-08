@@ -5,4 +5,3 @@ public class InvalidUserInputException extends Exception {
         super(message);
     }
 }
-

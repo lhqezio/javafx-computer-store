@@ -13,12 +13,14 @@ import java.util.Scanner;
 
 public class Display {
     private User user;
+
     /**
      * Display Welcome message
      */
     public void welcomeMsg() {
         System.out.println("Welcome to the Computer Store purchase experience,May I have your credentials ?(Username then Password)");
     }
+
     /**
      * Take user credentials and return whether they are valid or not and if they want to browse as guest
      * @param user
@@ -26,7 +28,7 @@ public class Display {
      */
     public boolean loginMsg(User user) {
         this.user = user;
-        if (user.getUserType()!=0) {
+        if (user.getUserType() != 0) {
             System.out.println("Login successful, welcome back " + user.getUsername() + ".");
             return true;
         } else {
@@ -42,26 +44,31 @@ public class Display {
             }
         }
     }
+
     /**
      * @return Main Menu String.
      */
-    private static String menu(){
+    private static String menu() {
         return "\n1.Homepage        2.Search Filter        3.Cart        4.Exit";
     }
-    private String topBar(){
-        return "Hello, "+user.getUsername()+"!\n";
+
+    private String topBar() {
+        return "Hello, " + user.getUsername() + "!\n";
     }
-    public void homepage(List<Product> prodOfTheDay){
+
+    public void homepage(List<Product> prodOfTheDay) {
         StringBuilder sysout = new StringBuilder(topBar()).append("\n\n\nPRODUCTS OF THE DAY!!!\n\n\n");
-        for(Product prod:prodOfTheDay){
+        for (Product prod : prodOfTheDay) {
             sysout.append(prod.getCategory()).append(":\n").append(prod).append("\n");
         }
         sysout.append(menu()).append(inputMsg());
         System.out.println(sysout);
     }
-    private static String inputMsg(){
+
+    private static String inputMsg() {
         return "\nPlease enter your choice:";
     }
+
     /**
      * This method is used to display the search filter menu and return the user selection.
      * @return input
@@ -77,8 +84,9 @@ public class Display {
         searchSpecificPage(input);
         return input;
     }
+
     private void searchSpecificPage(char input) {
-        switch(input){
+        switch (input) {
             case '1':
                 System.out.println("Please enter the keyword:");
                 break;
@@ -99,10 +107,11 @@ public class Display {
                 break;
         }
     }
-    public void searchResult(List<Product>products,String filteredBy){
-        StringBuilder results = new StringBuilder("Search Results For: "+filteredBy).append(":\n");
-        for(Product product:products){
-            results.append(product.getName()).append("\n"+product.getPrice()+"\n").append(product.getDescription());
+
+    public void searchResult(List<Product> products, String filteredBy) {
+        StringBuilder results = new StringBuilder("Search Results For: " + filteredBy).append(":\n");
+        for (Product product : products) {
+            results.append(product.getName()).append("\n" + product.getPrice() + "\n").append(product.getDescription());
         }
         results.append(menu()).append(inputMsg());
         System.out.println(results);
