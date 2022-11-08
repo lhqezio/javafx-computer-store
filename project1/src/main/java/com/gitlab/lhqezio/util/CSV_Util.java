@@ -76,8 +76,8 @@ public class CSV_Util {
         }
         int rowCount = linesCount - trailingNewlines;
 
-        System.out.println(colCount);
-        System.out.println(rowCount);
+        // System.out.println(colCount);
+        // System.out.println(rowCount);
 
         String[][] allRowsArr = new String[rowCount][];
         String[] rowArr = new String[colCount];
@@ -88,6 +88,7 @@ public class CSV_Util {
 
         try {
             c_ = 0;
+            char_ = buf[c_];
             int cBak;
             outer: while (true) {
                 switch (char_) {

@@ -7,10 +7,12 @@ import com.gitlab.lhqezio.items.Laptop;
 import com.gitlab.lhqezio.items.Product;
 import com.gitlab.lhqezio.util.CSV_Util;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,12 +22,33 @@ import java.util.Scanner;
  */
 public class App {
     public static void main(String[] args) {
+
+        Path usersCsv = (new File(gitIgnoreDir_, "users.csv")).toPath();
+        LoginChecker loginChecker_ = new LoginChecker(usersCsv);
+
+        Console myConsole = System.console();
+
+        String username;
+        while (true) {
+            System.out.println("Enter your username:");
+            username = myConsole.readLine();
+            System.out.println("Enter your password:");
+            char[] password_ = myConsole.readPassword();
+            int retValue = loginChecker_.check(username, password_);
+            //do NOT tell users that their username is incorrect, you can find users that way, usually there's a "forgot username" button, send email
+            if (retValue != 0) {
+                System.out.println("incorrect credentials, try again");
+                continue;
+            }
+            break;
+        }
+
         Display display = new Display();
         boolean cont = true;
         display.welcomeMsg();
         if (display.loginMsg(new User())) {
             while (cont) {
-                List<Product> prod = loadProducts();
+                List<Product> prod = getProducts();
                 Scanner sc = new Scanner(System.in);
                 char selection = 'a';
                 display.homepage(prod);
@@ -70,7 +93,8 @@ public class App {
 
     }
 
-    public static File getGitIgnoreDir() {
+    public static File gitIgnoreDir_ = getGitIgnoreDir();
+    private static File getGitIgnoreDir() {
         File dir_ = new File(System.getProperty("user.dir"));
         while (!(new File(dir_, ".gitignore")).exists()) {
             dir_ = dir_.getParentFile();
@@ -78,9 +102,9 @@ public class App {
         return dir_;
     }
 
-    public static List<Product> loadProducts() {
+    public static List<Product> getProducts() {
 
-        Path csvPath = (new File(getGitIgnoreDir(), "computers.csv")).toPath();
+        Path csvPath = (new File(gitIgnoreDir_, "computers.csv")).toPath();
         try {
             List<Product> products = new ArrayList<>();
 
@@ -108,4 +132,5 @@ public class App {
         // products.add(new Computer("Alienware X51","Lenovo",1000,10,"Thin And Light","Leno01","Intel Core i7","16GB","1TB","Nvidia GTX 1050","Windows 10",500));
         // return products;
     }
+
 };
