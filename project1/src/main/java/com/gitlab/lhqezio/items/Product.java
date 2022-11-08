@@ -1,7 +1,5 @@
 package com.gitlab.lhqezio.items;
 
-import com.gitlab.lhqezio.items.Item;
-
 public abstract class Product extends Item {
     private double price;
     private int quantity;

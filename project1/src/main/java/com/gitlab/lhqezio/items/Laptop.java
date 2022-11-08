@@ -1,7 +1,5 @@
 package com.gitlab.lhqezio.items;
 
-import com.gitlab.lhqezio.items.Computer;
-
 public class Laptop extends Computer {
     private int batteryLife;
 
