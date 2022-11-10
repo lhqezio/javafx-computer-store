@@ -5,6 +5,7 @@ import com.gitlab.lhqezio.cli.InvalidUserInputException;
 import com.gitlab.lhqezio.items.Computer;
 import com.gitlab.lhqezio.items.Laptop;
 import com.gitlab.lhqezio.items.Product;
+import com.gitlab.lhqezio.user.User;
 import com.gitlab.lhqezio.util.CSV_Util;
 
 import java.io.Console;
@@ -12,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -42,54 +42,53 @@ public class App {
             }
             break;
         }
+        User user_ = loginChecker_.getUser();
+        System.out.println("HELLO " + user_.getUsername());
+        System.out.println(user_.getWelcomeMessage());
 
-        Display display = new Display();
         boolean cont = true;
-        display.welcomeMsg();
-        if (display.loginMsg(new User())) {
+        while (cont) {
+            List<Product> prod = getProducts();
+            Scanner sc = new Scanner(System.in);
+            char selection = 'a';
+            Display display = new Display(user_);
+            display.homepage(prod);
             while (cont) {
-                List<Product> prod = getProducts();
-                Scanner sc = new Scanner(System.in);
-                char selection = 'a';
-                display.homepage(prod);
-                while (cont) {
-                    selection = sc.next().charAt(0);
-                    sc.nextLine();
-                    try {
-                        switch (selection) {
-                            case '1':
-                                display.homepage(prod);
-                                break;
-                            case '2':
-                                switch (display.searchFilterPage()) {
-                                    case '1':
-                                    case '2':
-                                    case '3':
-                                    case '4':
-                                        String keyword = sc.nextLine();
-                                        display.searchResult(prod, keyword);
-                                        break;
-                                    case '5':
-                                        display.homepage(prod);
-                                        break;
-                                    default:
-                                        throw new InvalidUserInputException(null);
-                                }
-                            case '4':
-                                return;
-                            default:
-                                throw new InvalidUserInputException(null);
-                        }
-                    } catch (InvalidUserInputException e) {
-                        System.out.println("Invalid input go back to homepage");
-                        display.homepage(prod);
+                selection = sc.next().charAt(0);
+                sc.nextLine();
+                try {
+                    switch (selection) {
+                        case '1':
+                            display.homepage(prod);
+                            break;
+                        case '2':
+                            switch (display.searchFilterPage()) {
+                                case '1':
+                                case '2':
+                                case '3':
+                                case '4':
+                                    String keyword = sc.nextLine();
+                                    display.searchResult(prod, keyword);
+                                    break;
+                                case '5':
+                                    display.homepage(prod);
+                                    break;
+                                default:
+                                    throw new InvalidUserInputException(null);
+                            }
+                        case '4':
+                            return;
+                        default:
+                            throw new InvalidUserInputException(null);
                     }
-
+                } catch (InvalidUserInputException e) {
+                    System.out.println("Invalid input go back to homepage");
+                    display.homepage(prod);
                 }
+
             }
-        } else {
-            return;
         }
+
 
     }
 

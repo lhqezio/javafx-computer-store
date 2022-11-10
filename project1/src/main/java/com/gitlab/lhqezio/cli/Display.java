@@ -5,14 +5,18 @@
  */
 package com.gitlab.lhqezio.cli;
 
-import com.gitlab.lhqezio.User;
 import com.gitlab.lhqezio.items.Product;
+import com.gitlab.lhqezio.user.User;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class Display {
     private User user;
+
+    public Display(User user_) {
+        this.user = user_;
+    }
 
     /**
      * Display Welcome message
@@ -27,21 +31,18 @@ public class Display {
      * @return user's status (Good to continue or not)
      */
     public boolean loginMsg(User user) {
+        //for reference only, do not use this method now
+        System.out.println("Login successful, welcome back " + user.getUsername() + ".");
         this.user = user;
-        if (user.getUserType() != 0) {
-            System.out.println("Login successful, welcome back " + user.getUsername() + ".");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Login failed, Do you want to browse as Guest ?(Y).");
+        char input = scanner.nextLine().charAt(0);
+        if (input == 'Y' || input == 'y') {
+            System.out.println("Welcome Guest.");
             return true;
         } else {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Login failed, Do you want to browse as Guest ?(Y).");
-            char input = scanner.nextLine().charAt(0);
-            if (input == 'Y' || input == 'y') {
-                System.out.println("Welcome Guest.");
-                return true;
-            } else {
-                System.out.println("Goodbye.");
-                return false;
-            }
+            System.out.println("Goodbye.");
+            return false;
         }
     }
 
