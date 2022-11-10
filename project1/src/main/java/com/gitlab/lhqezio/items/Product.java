@@ -4,12 +4,14 @@ public abstract class Product extends Item {
     private double price;
     private int quantity;
     private String description;
+    private double discount;
 
-    public Product(String name, String manufacturer, double price, int quantity, String description, String id) {
+    public Product(String name, String manufacturer, double price, double discount, int quantity, String description, String id) {
         super(name, manufacturer, description, id);
         this.price = price;
         this.quantity = quantity;
         this.description = description;
+        this.discount = discount;
     }
 
     public double getPrice() {
@@ -23,6 +25,9 @@ public abstract class Product extends Item {
     public String getDescription() {
         return description;
     };
+    public double getDiscount() {
+        return discount;
+    };
 
     @Override
     public String toString() {
@@ -30,4 +35,11 @@ public abstract class Product extends Item {
     }
 
     public abstract String getCategory();
+
+    public double getDiscountPercentage() {
+        return (getDiscount() / getPrice()) * 100;
+    }
+    public int discountCompareTo(Product other) {
+        return this.getDiscountPercentage() > other.getDiscountPercentage() ? 1 : -1;
+    }
 }

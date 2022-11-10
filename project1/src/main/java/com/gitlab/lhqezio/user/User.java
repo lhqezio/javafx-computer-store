@@ -14,7 +14,7 @@ public abstract class User {
     }
 
     public String getWelcomeMessage() {
-        return "Welcome.";
+        throw new UnsupportedOperationException();
     };
 
 }
