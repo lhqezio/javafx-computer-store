@@ -8,6 +8,8 @@ import java.nio.file.Path;
 
 import org.junit.Test;
 
+import com.gitlab.lhqezio.util.CSV_Util;
+
 /**
  * Unit test for simple App.
  */
@@ -25,7 +27,7 @@ public class AppTest
     @Test
     public void authenticationTest()
     {
-        Path usersCsv = (new File(App.gitIgnoreDir_, "users.csv")).toPath();
+        Path usersCsv = (new File(CSV_Util.getGitIgnoreDir(), "users.csv")).toPath();
         LoginChecker loginChecker_ = new LoginChecker(usersCsv);
 
         assertEquals(0, loginChecker_.check("someone", "abc".toCharArray()));
