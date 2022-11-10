@@ -95,4 +95,49 @@ public class ProductsList {
         }
         this.productsDictionary = productsDictionary;
     }
+    public List<Product> filterBy(char selection, String keyword) {
+        System.out.println("selection: " + selection + " keyword: " + keyword);
+        String[] keywords = keyword.split(";");
+        List<Product> filteredProducts = new ArrayList<>();
+        switch (selection) {
+            case '1':
+                for (String key : productsDictionary.get("Name").keySet()) {
+                    for (String keyword_ : keywords) {
+                        if (key.toLowerCase().contains(keyword_.toLowerCase())) {
+                            filteredProducts.addAll(productsDictionary.get("Name").get(key));
+                        }
+                    }
+                }
+                break;
+            case '2':
+                for (String key : productsDictionary.get("Category").keySet()) {
+                    System.out.println(key);
+                    for (String keyword_ : keywords) {
+                        if (key.toLowerCase().contains(keyword_.toLowerCase())) {
+                            filteredProducts.addAll(productsDictionary.get("Category").get(key));
+                        }
+                    }
+                }
+                break;
+            case '3':
+                for (String key : productsDictionary.get("Price").keySet()) {
+                    for (String keyword_ : keywords) {
+                        if (key.toLowerCase().contains(keyword_.toLowerCase())) {
+                            filteredProducts.addAll(productsDictionary.get("Price").get(key));
+                        }
+                    }
+                }
+                break;
+            case '4':
+                for (String key : productsDictionary.get("Manufacture").keySet()) {
+                    for (String keyword_ : keywords) {
+                        if (key.contains(keyword_)) {
+                            filteredProducts.addAll(productsDictionary.get("Manufacture").get(key));
+                        }
+                    }
+                }
+                break;
+        }
+        return filteredProducts;
+    }
 }

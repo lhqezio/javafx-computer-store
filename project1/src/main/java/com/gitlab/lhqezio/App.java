@@ -54,14 +54,13 @@ public class App {
             display.homepage();
             while (cont) {
                 selection = sc.next().charAt(0);
-                sc.nextLine();
                 try {
                     switch (selection) {
                         case '1':
                             display.homepage();
                             break;
                         case '2':
-                            searchFilterSwitch(display, productsList_.getProductsOfTheDay());
+                            searchFilterSwitch(display, productsList_);
                             break;
                         case '4':
                             return;
@@ -80,20 +79,21 @@ public class App {
      * @param products
      * @return
      */
-    public static void searchFilterSwitch(Display display,List<Product> prod)throws InvalidUserInputException{
+    public static void searchFilterSwitch(Display display,ProductsList prod)throws InvalidUserInputException{
         Scanner sc = new Scanner(System.in);
-        switch (display.searchFilterPage()) {
-            case '1':
-            case '2':
-            case '3':
-            case '4':
+        char selection = display.searchFilterPage();
+        switch (selection) {
+            case '1': case '2': case '3': case '4':
                 String keyword = sc.nextLine();
-                display.searchResult(prod, keyword);
+                List<Product> filteredProducts = prod.filterBy(selection, keyword);
+                display.searchResult(filteredProducts, keyword);
                 break;
             case '5':
                 display.homepage();
+                sc.close();
                 break;
             default:
+                sc.close();
                 throw new InvalidUserInputException();
         }
     }

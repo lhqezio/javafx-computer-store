@@ -61,7 +61,7 @@ public class Display {
     public char searchFilterPage() {
         clear();
         StringBuilder searchPage = new StringBuilder(topBar());
-        searchPage.append("\n1.Search by Keyword        \n\n2.Search by Category        \n\n3.Search by Price        \n\n4.Search by Manufacturer        \n\n5.Back to Homepage");
+        searchPage.append("\n1.Search by name        \n\n2.Search by Category        \n\n3.Search by Price        \n\n4.Search by Manufacturer        \n\n5.Back to Homepage");
         searchPage.append(inputMsg());
         System.out.println(searchPage);
         Scanner sc = new Scanner(System.in);
@@ -75,7 +75,7 @@ public class Display {
         clear();
         switch (input) {
             case '1':
-                System.out.println("Please enter the keyword(Match ):");
+                System.out.println("Please enter the name:");
                 break;
             case '2':
                 System.out.println("Please enter the category:");
