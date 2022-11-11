@@ -1,9 +1,9 @@
 package com.gitlab.lhqezio;
 
 import com.gitlab.lhqezio.cli.Display;
-import com.gitlab.lhqezio.cli.InvalidUserInputException;
+import com.gitlab.lhqezio.exception.*;
 import com.gitlab.lhqezio.items.Product;
-import com.gitlab.lhqezio.user.User;
+import com.gitlab.lhqezio.user.*;
 import com.gitlab.lhqezio.util.ProductsList;
 
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         Display.clear();
-        LoginChecker loginChecker_ = new LoginChecker();
-        loginChecker_.login();
-        User user_ = loginChecker_.getUser();
+        Auth Auth_ = new Auth();
+        Auth_.login();
+        User user_ = Auth_.getUser();
         boolean cont = true;
         while (cont) {
             ProductsList productsList_ = new ProductsList();
@@ -35,7 +35,7 @@ public class App {
                         case '4':
                             return;
                         default:
-                            throw new InvalidUserInputException(null);
+                            throw new InvalidUserInputException();
                     }
                 } catch (InvalidUserInputException e) {
                     System.out.println("Invalid input go back to homepage");
@@ -62,10 +62,8 @@ public class App {
                 break;
             case '5':
                 display.homepage();
-                sc.close();
                 break;
             default:
-                sc.close();
                 throw new InvalidUserInputException();
         }
     }

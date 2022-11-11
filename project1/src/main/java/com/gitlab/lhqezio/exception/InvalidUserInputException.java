@@ -1,4 +1,4 @@
-package com.gitlab.lhqezio.cli;
+package com.gitlab.lhqezio.exception;
 
 public class InvalidUserInputException extends Exception {
     public InvalidUserInputException(String message) {

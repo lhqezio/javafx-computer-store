@@ -43,7 +43,7 @@ public class Display {
         clear();
         StringBuilder sysout = new StringBuilder(topBar()).append("\n\n\nPRODUCTS OF THE DAY!!!\n\n\n");
         for (Product prod : products.getProductsOfTheDay()) {
-            sysout.append(prod.getCategory()).append(":\n").append(prod).append("\n");
+            sysout.append(prod).append("\n");
         }
         sysout.append(menu()).append(inputMsg());
         System.out.println(sysout);
@@ -52,7 +52,8 @@ public class Display {
     private static String inputMsg() {
         return "\nPlease enter your choice:";
     }
-
+    private void displayProducts(List<Product> products) {
+    }
     /**
      * This method is used to display the search filter menu and return the user selection.
      * @return input
@@ -96,12 +97,18 @@ public class Display {
 
     public void searchResult(List<Product> products, String filteredBy) {
         clear();
-        StringBuilder results = new StringBuilder("Search Results For \"" + filteredBy + "\"").append(":\n");
-        for (Product product : products) {
-            results.append(product.getName()).append("\n" + product.getPrice() + "\n").append(product.getDescription()).append("\n\n");
+        if(products.size() != 0){
+            StringBuilder results = new StringBuilder("Search Results For \"" + filteredBy + "\"").append(":\n");
+            for (Product product : products) {
+                results.append(product.getCategory()+":\n").append(product).append("\n\n");
+            }
+            results.append(menu()).append(inputMsg());
+            System.out.println(results);
         }
-        results.append(menu()).append(inputMsg());
-        System.out.println(results);
+        else{
+            System.out.println("No results found for \"" + filteredBy + "\""+menu()+inputMsg());
+            
+        }
     }
     public static void clear() {
         System.out.println("\033[H\033[2J");

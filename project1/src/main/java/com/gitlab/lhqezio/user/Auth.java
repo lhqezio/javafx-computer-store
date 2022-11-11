@@ -1,4 +1,4 @@
-package com.gitlab.lhqezio;
+package com.gitlab.lhqezio.user;
 
 import java.io.Console;
 import java.io.File;
@@ -13,9 +13,6 @@ import java.util.HashMap;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import com.gitlab.lhqezio.user.AdminUser;
-import com.gitlab.lhqezio.user.NormalUser;
-import com.gitlab.lhqezio.user.User;
 import com.gitlab.lhqezio.util.CSV_Util;
 
 class UserData { //use this instead of String[3]
@@ -31,16 +28,15 @@ class UserData { //use this instead of String[3]
     }
 }
 
-public class LoginChecker {
+public class Auth {
 
     private HashMap<String, UserData> byUsername = new HashMap<String, UserData>();
 
     private String savedPrivilegeLevel;
     private String savedUsername;
 
-    public LoginChecker() {
-        File gitIgnoreDir_ = CSV_Util.getGitIgnoreDir();
-        Path csvPath = (new File(gitIgnoreDir_, "users.csv")).toPath();
+    public Auth() {
+        Path csvPath = CSV_Util.getCsvFilePath("users.csv");
         try {
             String[][] allRowsArr = CSV_Util.parseCSV(CSV_Util.readBytesAdd2Newline(csvPath));
             for (int i = 0; i < allRowsArr.length; i++) {

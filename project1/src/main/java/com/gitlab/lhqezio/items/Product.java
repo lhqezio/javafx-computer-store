@@ -31,7 +31,7 @@ public abstract class Product extends Item {
 
     @Override
     public String toString() {
-        return getName() + "\n" + getPrice() + "\n" + getDescription() + "\n";
+        return getManufacturer() + " " + getName() + "\n" + getPrice() + "\n" + getDescription() + "\n";
     }
 
     public abstract String getCategory();

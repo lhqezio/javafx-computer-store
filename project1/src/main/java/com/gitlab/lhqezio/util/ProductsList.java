@@ -3,10 +3,8 @@ package com.gitlab.lhqezio.util;
 import com.gitlab.lhqezio.items.Computer;
 import com.gitlab.lhqezio.items.Laptop;
 import com.gitlab.lhqezio.items.Product;
-import com.gitlab.lhqezio.util.*;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -16,11 +14,8 @@ import java.util.List;
 public class ProductsList {
     private List<Product> products;
     private HashMap<String,HashMap<String,List<Product>>> productsDictionary;
-
-    private File gitIgnoreDir_;
     public ProductsList() {
-        gitIgnoreDir_ = CSV_Util.getGitIgnoreDir();
-        Path csvPath = (new File(gitIgnoreDir_, "computers.csv")).toPath();
+        Path csvPath = CSV_Util.getCsvFilePath("computers.csv");
         try {
             List<Product> products = new ArrayList<>();
 

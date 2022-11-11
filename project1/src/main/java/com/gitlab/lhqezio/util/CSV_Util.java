@@ -204,11 +204,16 @@ public class CSV_Util {
             return new byte[0];
         }
     }
-    public static File getGitIgnoreDir() {
+    private static File getGitIgnoreDir() {
         File dir_ = new File(System.getProperty("user.dir"));
         while (!(new File(dir_, ".gitignore")).exists()) {
             dir_ = dir_.getParentFile();
         }
         return dir_;
+    }
+    public static Path getCsvFilePath(String fileName) {
+        File dir_ = getGitIgnoreDir();
+        File csvFile = new File(dir_, fileName);
+        return csvFile.toPath();
     }
 }
