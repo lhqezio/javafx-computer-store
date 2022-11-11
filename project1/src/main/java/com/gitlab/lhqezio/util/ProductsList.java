@@ -59,10 +59,6 @@ public class ProductsList {
         HashMap<String,List<Product>> nameMap = new HashMap<>();
         HashMap<String,List<Product>> categoryMap = new HashMap<>();
         HashMap<String,List<Product>> priceMap = new HashMap<>();
-        productsDictionary.put("Manufacturer",new HashMap<>());
-        productsDictionary.put("Name",new HashMap<>());
-        productsDictionary.put("Category",new HashMap<>());
-        productsDictionary.put("Price",new HashMap<>());
         for(Product product : products){
             if(manufactureMap.containsKey(product.getManufacturer())){
                 manufactureMap.get(product.getManufacturer()).add(product);
@@ -89,12 +85,17 @@ public class ProductsList {
                 priceMap.get(String.valueOf(product.getPrice())).add(product);
             }
             else{
-                priceMap.put(String.valueOf(product.getPrice()),new ArrayList<>());
+                priceMap.put(String.valueOf(product.getPrice()) ,new ArrayList<>());
                 priceMap.get(String.valueOf(product.getPrice())).add(product);
             }
         }
+        productsDictionary.put("Manufacturer",manufactureMap);
+        productsDictionary.put("Name",nameMap);
+        productsDictionary.put("Category",categoryMap);
+        productsDictionary.put("Price",priceMap);
         this.productsDictionary = productsDictionary;
     }
+
     public List<Product> filterBy(char selection, String keyword) {
         System.out.println("selection: " + selection + " keyword: " + keyword);
         String[] keywords = keyword.split(";");
@@ -103,11 +104,13 @@ public class ProductsList {
             case '1':
                 for (String key : productsDictionary.get("Name").keySet()) {
                     for (String keyword_ : keywords) {
+                        System.out.println("key: " + key + " keyword: " + keyword_);
                         if (key.toLowerCase().contains(keyword_.toLowerCase())) {
                             filteredProducts.addAll(productsDictionary.get("Name").get(key));
                         }
                     }
                 }
+                System.out.println("filteredProducts: " + filteredProducts);
                 break;
             case '2':
                 for (String key : productsDictionary.get("Category").keySet()) {
@@ -122,17 +125,17 @@ public class ProductsList {
             case '3':
                 for (String key : productsDictionary.get("Price").keySet()) {
                     for (String keyword_ : keywords) {
-                        if (key.toLowerCase().contains(keyword_.toLowerCase())) {
+                        if (key.contains(keyword_)) {
                             filteredProducts.addAll(productsDictionary.get("Price").get(key));
                         }
                     }
                 }
                 break;
             case '4':
-                for (String key : productsDictionary.get("Manufacture").keySet()) {
+                for (String key : productsDictionary.get("Manufacturer").keySet()) {
                     for (String keyword_ : keywords) {
-                        if (key.contains(keyword_)) {
-                            filteredProducts.addAll(productsDictionary.get("Manufacture").get(key));
+                        if (key.toLowerCase().contains(keyword_.toLowerCase())) {
+                            filteredProducts.addAll(productsDictionary.get("Manufacturer").get(key));
                         }
                     }
                 }

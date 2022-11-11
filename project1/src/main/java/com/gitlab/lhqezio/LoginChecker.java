@@ -1,5 +1,7 @@
 package com.gitlab.lhqezio;
 
+import java.io.Console;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
@@ -36,7 +38,9 @@ public class LoginChecker {
     private String savedPrivilegeLevel;
     private String savedUsername;
 
-    public LoginChecker(Path csvPath) {
+    public LoginChecker() {
+        File gitIgnoreDir_ = CSV_Util.getGitIgnoreDir();
+        Path csvPath = (new File(gitIgnoreDir_, "users.csv")).toPath();
         try {
             String[][] allRowsArr = CSV_Util.parseCSV(CSV_Util.readBytesAdd2Newline(csvPath));
             for (int i = 0; i < allRowsArr.length; i++) {
@@ -82,6 +86,23 @@ public class LoginChecker {
                 return new NormalUser(this.savedUsername);
         }
         return null;
+    }
+    public void login(){
+        Console myConsole = System.console();
+        String username;
+        while (true) {
+            System.out.println("Enter your username:");
+            username = myConsole.readLine();
+            System.out.println("Enter your password:");
+            char[] password_ = myConsole.readPassword();
+            int retValue = this.check(username, password_);
+            //do NOT tell users that their username is incorrect, you can find users that way, usually there's a "forgot username" button, send email
+            if (retValue != 0) {
+                System.out.println("incorrect credentials, try again");
+                continue;
+            }
+            break;
+        }
     }
 
 }

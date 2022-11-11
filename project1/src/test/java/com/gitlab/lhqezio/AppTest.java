@@ -27,8 +27,7 @@ public class AppTest
     @Test
     public void authenticationTest()
     {
-        Path usersCsv = (new File(CSV_Util.getGitIgnoreDir(), "users.csv")).toPath();
-        LoginChecker loginChecker_ = new LoginChecker(usersCsv);
+        LoginChecker loginChecker_ = new LoginChecker();
 
         assertEquals(0, loginChecker_.check("someone", "abc".toCharArray()));
         assertEquals(2, loginChecker_.check("someone", "acc".toCharArray()));

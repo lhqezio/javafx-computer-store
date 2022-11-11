@@ -20,7 +20,6 @@ public class Display {
         this.user = user_;
         this.products = productsOfTheDay;
     }
-
     /**
      * Display Welcome message
      */
@@ -99,13 +98,13 @@ public class Display {
         clear();
         StringBuilder results = new StringBuilder("Search Results For \"" + filteredBy + "\"").append(":\n");
         for (Product product : products) {
-            results.append(product.getName()).append("\n" + product.getPrice() + "\n").append(product.getDescription());
+            results.append(product.getName()).append("\n" + product.getPrice() + "\n").append(product.getDescription()).append("\n\n");
         }
         results.append(menu()).append(inputMsg());
         System.out.println(results);
     }
-    private static void clear() {
-        System.out.print("\033[H\033[2J");
+    public static void clear() {
+        System.out.println("\033[H\033[2J");
         System.out.flush();
     }
 }
