@@ -1,7 +1,6 @@
 package com.gitlab.lhqezio.user;
 
 import java.io.Console;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;

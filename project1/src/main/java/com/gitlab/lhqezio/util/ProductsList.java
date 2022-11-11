@@ -55,34 +55,30 @@ public class ProductsList {
         HashMap<String,List<Product>> categoryMap = new HashMap<>();
         HashMap<String,List<Product>> priceMap = new HashMap<>();
         for(Product product : products){
-            if(manufactureMap.containsKey(product.getManufacturer())){
-                manufactureMap.get(product.getManufacturer()).add(product);
+            String manufacturer = product.getManufacturer();
+            String name = product.getName();
+            String category = product.getCategory();
+            String priceString = String.valueOf(product.getPrice());
+            if(!manufactureMap.containsKey(manufacturer)){
+                manufactureMap.put(manufacturer,new ArrayList<>());
             }
-            else{
-                manufactureMap.put(product.getManufacturer(),new ArrayList<>());
-                manufactureMap.get(product.getManufacturer()).add(product);
+            manufactureMap.get(manufacturer).add(product);
+            
+            if(!nameMap.containsKey(name)){
+                nameMap.put(name,new ArrayList<>());
             }
-            if(nameMap.containsKey(product.getName())){
-                nameMap.get(product.getName()).add(product);
+            nameMap.get(product.getName()).add(product);
+            
+            if(!categoryMap.containsKey(category)){
+                categoryMap.put(category,new ArrayList<>());
             }
-            else{
-                nameMap.put(product.getName(),new ArrayList<>());
-                nameMap.get(product.getName()).add(product);
+            categoryMap.get(category).add(product);
+            
+            if(!priceMap.containsKey(priceString)){
+                priceMap.put(priceString,new ArrayList<>());
             }
-            if(categoryMap.containsKey(product.getCategory())){
-                categoryMap.get(product.getCategory()).add(product);
-            }
-            else{
-                categoryMap.put(product.getCategory(),new ArrayList<>());
-                categoryMap.get(product.getCategory()).add(product);
-            }
-            if(priceMap.containsKey(String.valueOf(product.getPrice()))){
-                priceMap.get(String.valueOf(product.getPrice())).add(product);
-            }
-            else{
-                priceMap.put(String.valueOf(product.getPrice()) ,new ArrayList<>());
-                priceMap.get(String.valueOf(product.getPrice())).add(product);
-            }
+            priceMap.get(priceString).add(product);
+            
         }
         productsDictionary.put("Manufacturer",manufactureMap);
         productsDictionary.put("Name",nameMap);
