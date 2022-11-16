@@ -67,7 +67,7 @@ public class ProductsList {
             if(!nameMap.containsKey(name)){
                 nameMap.put(name,new ArrayList<>());
             }
-            nameMap.get(product.getName()).add(product);
+            nameMap.get(name).add(product);
             
             if(!categoryMap.containsKey(category)){
                 categoryMap.put(category,new ArrayList<>());
