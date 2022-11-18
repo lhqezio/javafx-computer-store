@@ -11,8 +11,11 @@ import java.util.HashMap;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.xml.crypto.Data;
 
 import com.gitlab.lhqezio.util.CSV_Util;
+import com.gitlab.lhqezio.util.CsvLoader;
+import com.gitlab.lhqezio.util.DataLoader;
 
 class UserData { //use this instead of String[3]
 
@@ -35,15 +38,11 @@ public class Auth {
     private String savedUsername;
 
     public Auth() {
-        Path csvPath = CSV_Util.getCsvFilePath("users.csv");
-        try {
-            String[][] allRowsArr = CSV_Util.parseCSV(CSV_Util.readBytesAdd2Newline(csvPath));
-            for (int i = 0; i < allRowsArr.length; i++) {
-                String[] rowArr = allRowsArr[i];
-                this.byUsername.put(rowArr[0], new UserData(rowArr[1], rowArr[2], rowArr[3]));
-            }
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+        DataLoader dataLoader = new CsvLoader();
+        String[][] allRowsArr = dataLoader.getData("users.csv");
+        for (int i = 0; i < allRowsArr.length; i++) {
+            String[] rowArr = allRowsArr[i];
+            this.byUsername.put(rowArr[0], new UserData(rowArr[1], rowArr[2], rowArr[3]));
         }
     }
 
@@ -82,7 +81,8 @@ public class Auth {
         }
         return null;
     }
-    public void login(){
+
+    public void login() {
         Console myConsole = System.console();
         String username;
         while (true) {

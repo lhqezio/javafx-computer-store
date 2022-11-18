@@ -16,18 +16,27 @@ public abstract class Product extends Item {
 
     public double getPrice() {
         return price;
-    };
+    }
+
+    ;
 
     public int getQuantity() {
         return quantity;
-    };
+    }
+
+    ;
 
     public String getDescription() {
         return description;
-    };
+    }
+
+    ;
+
     public double getDiscount() {
         return discount;
-    };
+    }
+
+    ;
 
     @Override
     public String toString() {
@@ -39,6 +48,7 @@ public abstract class Product extends Item {
     public double getDiscountPercentage() {
         return (getDiscount() / getPrice()) * 100;
     }
+
     public int discountCompareTo(Product other) {
         return this.getDiscountPercentage() > other.getDiscountPercentage() ? 1 : -1;
     }

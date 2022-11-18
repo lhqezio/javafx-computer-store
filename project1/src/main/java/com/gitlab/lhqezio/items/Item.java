@@ -15,17 +15,25 @@ public abstract class Item {
 
     public String getName() {
         return name;
-    };
+    }
+
+    ;
 
     public String getManufacturer() {
         return manufacturer;
-    };
+    }
+
+    ;
 
     public String getID() {
         return id;
-    };
+    }
+
+    ;
 
     public String getDescription() {
         return description;
-    };
+    }
+
+    ;
 }

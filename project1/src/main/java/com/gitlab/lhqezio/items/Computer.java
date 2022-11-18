@@ -8,7 +8,7 @@ public class Computer extends Product {
     private String operatingSystem;
     private int capacity;
 
-    public Computer(String name, String manufacturer, double price,double discount, int quantity, String description, String id, String processor, String ram, String hardDrive, String graphicsCard, String operatingSystem, int capacity) {
+    public Computer(String name, String manufacturer, double price, double discount, int quantity, String description, String id, String processor, String ram, String hardDrive, String graphicsCard, String operatingSystem, int capacity) {
         super(name, manufacturer, price, discount, quantity, description, id);
         this.processor = processor;
         this.ram = ram;
@@ -20,5 +20,7 @@ public class Computer extends Product {
 
     public String getCategory() {
         return "Computer";
-    };
+    }
+
+    ;
 }

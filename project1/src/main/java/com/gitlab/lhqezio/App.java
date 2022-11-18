@@ -45,17 +45,22 @@ public class App {
             }
         }
     }
+
     /**
      * This method is used as a switch for the search filter menu.
+     *
      * @param display
      * @param productsList_
      * @return void
      */
-    public static void searchFilterSwitch(Display display,ProductsList prod)throws InvalidUserInputException{
+    public static void searchFilterSwitch(Display display, ProductsList prod) throws InvalidUserInputException {
         Scanner sc = new Scanner(System.in);
         char selection = display.searchFilterPage();
         switch (selection) {
-            case '1': case '2': case '3': case '4':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
                 String keyword = sc.nextLine();
                 List<Product> filteredProducts = prod.filterBy(selection, keyword);
                 display.searchResult(filteredProducts, keyword);

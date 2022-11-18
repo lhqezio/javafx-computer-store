@@ -15,7 +15,8 @@ public class CSV_Util {
 
         int c_ = 0;
         byte char_ = buf[c_];
-        outer: while (true) {
+        outer:
+        while (true) {
             switch (char_) {
                 case '"':
                     c_++;
@@ -42,7 +43,8 @@ public class CSV_Util {
                         char_ = buf[c_];
                     }
                 default:
-                    outer2: while (true) {
+                    outer2:
+                    while (true) {
                         switch (char_) {
                             case '\n':
                                 colCount++;
@@ -91,7 +93,8 @@ public class CSV_Util {
             c_ = 0;
             char_ = buf[c_];
             int cBak;
-            outer: while (true) {
+            outer:
+            while (true) {
                 switch (char_) {
                     case '"':
                         c_++;
@@ -131,7 +134,8 @@ public class CSV_Util {
                         }
                     default:
                         cBak = c_;
-                        outer2: while (true) {
+                        outer2:
+                        while (true) {
                             switch (char_) {
                                 case '\n': {
                                     String field_ = new String(buf, cBak, c_ - cBak, "UTF-8");
@@ -168,7 +172,7 @@ public class CSV_Util {
             return allRowsArr;
         } catch (Exception e) {
             System.out.println(e);
-            return new String[][] {};
+            return new String[][]{};
         }
 
     }
@@ -204,6 +208,7 @@ public class CSV_Util {
             return new byte[0];
         }
     }
+
     private static File getGitIgnoreDir() {
         File dir_ = new File(System.getProperty("user.dir"));
         while (!(new File(dir_, ".gitignore")).exists()) {
@@ -211,6 +216,7 @@ public class CSV_Util {
         }
         return dir_;
     }
+
     public static Path getCsvFilePath(String fileName) {
         File dir_ = getGitIgnoreDir();
         File csvFile = new File(dir_, fileName);
