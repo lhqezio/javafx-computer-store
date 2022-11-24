@@ -21,6 +21,22 @@ public class Computer extends Product {
     public String getCategory() {
         return "Computer";
     }
-
-    ;
+    public String getGraphicsCard() {
+        return graphicsCard;
+    }
+    public String getHardDrive() {
+        return hardDrive;
+    }
+    public String getOperatingSystem() {
+        return operatingSystem;
+    }
+    public String getProcessor() {
+        return processor;
+    }
+    public String getRam() {
+        return ram;
+    }
+    public int getCapacity() {
+        return capacity;
+    }
 }

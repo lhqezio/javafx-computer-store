@@ -1,7 +1,5 @@
 package com.gitlab.lhqezio.util;
 
-import com.gitlab.lhqezio.items.Computer;
-import com.gitlab.lhqezio.items.Laptop;
 import com.gitlab.lhqezio.items.Product;
 
 import java.util.ArrayList;
@@ -13,21 +11,9 @@ public class ProductsList {
     private HashMap<String, HashMap<String, List<Product>>> productsDictionary;
 
     public ProductsList() {
-        List<Product> products = new ArrayList<>();
         DataLoader dataLoader = new CsvLoader();
         String[][] allRowsArr = dataLoader.getData("products.csv");
-        for (int i = 0; i < allRowsArr.length; i++) {
-            String[] rowArr = allRowsArr[i];
-            switch (rowArr[0]) {
-                case "Laptop":
-                    products.add(new Laptop(rowArr[1], rowArr[2], Double.parseDouble(rowArr[3]), Double.parseDouble(rowArr[4]), Integer.parseInt(rowArr[5]), rowArr[6], rowArr[7], rowArr[8], rowArr[9], rowArr[10], rowArr[11], rowArr[12], Integer.parseInt(rowArr[13]), Integer.parseInt(rowArr[14])));
-                    break;
-                case "Computer":
-                    products.add(new Computer(rowArr[1], rowArr[2], Double.parseDouble(rowArr[3]), Double.parseDouble(rowArr[4]), Integer.parseInt(rowArr[5]), rowArr[6], rowArr[7], rowArr[8], rowArr[9], rowArr[10], rowArr[11], rowArr[12], Integer.parseInt(rowArr[13])));
-                    break;
-            }
-        }
-        this.products = products;
+        this.products = CSV_Util.parseProduct(allRowsArr);
         initProductDictionary();
     }
 
@@ -128,4 +114,8 @@ public class ProductsList {
         }
         return filteredProducts;
     }
+    public List<Product> getList(){
+        return this.products;
+    }
+
 }

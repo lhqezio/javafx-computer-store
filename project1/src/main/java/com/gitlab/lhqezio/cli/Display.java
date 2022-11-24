@@ -59,8 +59,6 @@ public class Display {
         System.out.println(sysout);
     }
 
-    private void displayProducts(List<Product> products) {
-    }
 
     /**
      * This method is used to display the search filter menu and return the user selection.

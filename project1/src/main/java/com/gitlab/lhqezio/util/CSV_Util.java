@@ -6,6 +6,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gitlab.lhqezio.items.Computer;
+import com.gitlab.lhqezio.items.Laptop;
+import com.gitlab.lhqezio.items.Product;
 
 public class CSV_Util {
 
@@ -221,5 +227,20 @@ public class CSV_Util {
         File dir_ = getGitIgnoreDir();
         File csvFile = new File(dir_, fileName);
         return csvFile.toPath();
+    }
+    public static List<Product> parseProduct(String[][] allRowsArr) {
+        List<Product> products = new ArrayList<>();
+        for (int i = 0; i < allRowsArr.length; i++) {
+            String[] rowArr = allRowsArr[i];
+            switch (rowArr[0]) {
+                case "Laptop":
+                    products.add(new Laptop(rowArr[1], rowArr[2], Double.parseDouble(rowArr[3]), Double.parseDouble(rowArr[4]), Integer.parseInt(rowArr[5]), rowArr[6], rowArr[7], rowArr[8], rowArr[9], rowArr[10], rowArr[11], rowArr[12], Integer.parseInt(rowArr[13]), Integer.parseInt(rowArr[14])));
+                    break;
+                case "Computer":
+                    products.add(new Computer(rowArr[1], rowArr[2], Double.parseDouble(rowArr[3]), Double.parseDouble(rowArr[4]), Integer.parseInt(rowArr[5]), rowArr[6], rowArr[7], rowArr[8], rowArr[9], rowArr[10], rowArr[11], rowArr[12], Integer.parseInt(rowArr[13])));
+                    break;
+            }
+        }
+        return products;
     }
 }
