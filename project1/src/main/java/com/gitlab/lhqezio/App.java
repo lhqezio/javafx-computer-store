@@ -12,15 +12,15 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         Display.clear();
-        Auth Auth_ = new Auth();
-        Auth_.login();
-        User user_ = Auth_.getUser();
+        Auth auth = new Auth();
+        auth.login();
+        User user = auth.getUser();
         boolean cont = true;
         while (cont) {
             ProductsList productsList_ = new ProductsList();
             Scanner sc = new Scanner(System.in);
             char selection = 'a';
-            Display display = new Display(user_, productsList_);
+            Display display = new Display(user, productsList_);
             display.homepage();
             while (cont) {
                 selection = sc.next().charAt(0);
@@ -50,7 +50,7 @@ public class App {
      * This method is used as a switch for the search filter menu.
      *
      * @param display
-     * @param productsList_
+     * @param productsList
      * @return void
      */
     public static void searchFilterSwitch(Display display, ProductsList prod) throws InvalidUserInputException {

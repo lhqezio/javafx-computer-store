@@ -14,11 +14,11 @@ public class AuthenticationTest
     @Test
     public void authenticationTest()
     {
-        Auth Auth_ = new Auth();
+        Auth auth = new Auth();
 
-        assertEquals(0, Auth_.check("someone", "abc".toCharArray()));
-        assertEquals(2, Auth_.check("someone", "acc".toCharArray()));
-        assertEquals(1, Auth_.check("AAAAAAA", "abc".toCharArray()));
+        assertEquals(0, auth.check("someone", "abc".toCharArray()));
+        assertEquals(2, auth.check("someone", "acc".toCharArray()));
+        assertEquals(1, auth.check("AAAAAAA", "abc".toCharArray()));
 
     }
 }

@@ -19,69 +19,69 @@ public class CSV_Util {
         // get length
         int colCount = 0;
 
-        int c_ = 0;
-        byte char_ = buf[c_];
+        int c = 0;
+        byte character = buf[c];
         outer:
         while (true) {
-            switch (char_) {
+            switch (character) {
                 case '"':
-                    c_++;
-                    char_ = buf[c_];
+                    c++;
+                    character = buf[c];
                     while (true) {
-                        switch (char_) {
+                        switch (character) {
                             case '"':
-                                byte nextChar = buf[c_ + 1];
+                                byte nextChar = buf[c + 1];
                                 if (nextChar == '"') {
-                                    c_ += 2;
-                                    char_ = buf[c_];
+                                    c += 2;
+                                    character = buf[c];
                                     continue;
                                 } else {
                                     colCount++;
                                     if (nextChar == '\n') {
                                         break outer;
                                     }
-                                    c_ += 2;
-                                    char_ = buf[c_];
+                                    c += 2;
+                                    character = buf[c];
                                     continue outer;
                                 }
                         }
-                        c_++;
-                        char_ = buf[c_];
+                        c++;
+                        character = buf[c];
                     }
                 default:
                     outer2:
                     while (true) {
-                        switch (char_) {
+                        switch (character) {
                             case '\n':
                                 colCount++;
-                                c_++;
-                                char_ = buf[c_];
+                                c++;
+                                character = buf[c];
 
                                 break outer;
                             case ',':
                                 colCount++;
-                                c_++;
-                                char_ = buf[c_];
+                                c++;
+                                character = buf[c];
                                 break outer2;
                         }
-                        c_++;
-                        char_ = buf[c_];
+                        c++;
+                        character = buf[c];
                     }
             }
         }
 
         int linesCount = 2;
-        while (c_ < buf.length) {
-            if (buf[c_] == '\n') {
+        while (c < buf.length) {
+            if (buf[c] == '\n') {
                 linesCount++;
             }
-            c_++;
+            c++;
         }
         int trailingNewlines = 2;
-        c_ = buf.length - 3;
-        while (buf[c_] == '\n') {
+        c = buf.length - 3;
+        while (buf[c] == '\n') {
             trailingNewlines++;
-            c_--;
+            c--;
         }
         int rowCount = linesCount - trailingNewlines;
 
@@ -96,33 +96,33 @@ public class CSV_Util {
         int fieldIdx = 0;
 
         try {
-            c_ = 0;
-            char_ = buf[c_];
+            c = 0;
+            character = buf[c];
             int cBak;
             outer:
             while (true) {
-                switch (char_) {
+                switch (character) {
                     case '"':
-                        c_++;
-                        cBak = c_;
-                        char_ = buf[c_];
+                        c++;
+                        cBak = c;
+                        character = buf[c];
                         while (true) {
-                            switch (char_) {
+                            switch (character) {
                                 case '"':
-                                    byte nextChar = buf[c_ + 1];
+                                    byte nextChar = buf[c + 1];
                                     if (nextChar == '"') {
-                                        c_ += 2;
-                                        char_ = buf[c_];
+                                        c += 2;
+                                        character = buf[c];
                                         continue;
                                     } else {
-                                        String field_ = new String(buf, cBak, c_ - cBak, "UTF-8");
+                                        String field_ = new String(buf, cBak, c - cBak, "UTF-8");
                                         String escapedField = field_.replace("\"\"", "\"");
                                         rowArr[fieldIdx] = escapedField;
                                         fieldIdx++;
 
-                                        c_ += 2;
+                                        c += 2;
                                         if (nextChar == '\n') {
-                                            if (buf[c_] == '\n') {
+                                            if (buf[c] == '\n') {
                                                 break outer;
                                             } else {
                                                 rowArr = new String[colCount];
@@ -131,27 +131,27 @@ public class CSV_Util {
                                                 rowsIdx++;
                                             }
                                         }
-                                        char_ = buf[c_];
+                                        character = buf[c];
                                         continue outer;
                                     }
                             }
-                            c_++;
-                            char_ = buf[c_];
+                            c++;
+                            character = buf[c];
                         }
                     default:
-                        cBak = c_;
+                        cBak = c;
                         outer2:
                         while (true) {
-                            switch (char_) {
+                            switch (character) {
                                 case '\n': {
-                                    String field_ = new String(buf, cBak, c_ - cBak, "UTF-8");
+                                    String field_ = new String(buf, cBak, c - cBak, "UTF-8");
                                     rowArr[fieldIdx] = field_;
                                     fieldIdx++;
 
-                                    c_++;
-                                    char_ = buf[c_];
+                                    c++;
+                                    character = buf[c];
 
-                                    if (char_ == '\n') {
+                                    if (character == '\n') {
                                         break outer;
                                     }
                                     rowArr = new String[colCount];
@@ -161,17 +161,17 @@ public class CSV_Util {
                                     break outer2;
                                 }
                                 case ',': {
-                                    String field_ = new String(buf, cBak, c_ - cBak, "UTF-8");
+                                    String field_ = new String(buf, cBak, c - cBak, "UTF-8");
                                     rowArr[fieldIdx] = field_;
                                     fieldIdx++;
 
-                                    c_++;
-                                    char_ = buf[c_];
+                                    c++;
+                                    character = buf[c];
                                     break outer2;
                                 }
                             }
-                            c_++;
-                            char_ = buf[c_];
+                            c++;
+                            character = buf[c];
                         }
                 }
             }
