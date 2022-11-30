@@ -1,6 +1,5 @@
 package com.gitlab.lhqezio.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
@@ -215,19 +214,6 @@ public class CSV_Util {
         }
     }
 
-    private static File getGitIgnoreDir() {
-        File dir_ = new File(System.getProperty("user.dir"));
-        while (!(new File(dir_, ".gitignore")).exists()) {
-            dir_ = dir_.getParentFile();
-        }
-        return dir_;
-    }
-
-    public static Path getCsvFilePath(String fileName) {
-        File dir_ = getGitIgnoreDir();
-        File csvFile = new File(dir_, fileName);
-        return csvFile.toPath();
-    }
     public static List<Product> parseProduct(String[][] allRowsArr) {
         List<Product> products = new ArrayList<>();
         for (int i = 0; i < allRowsArr.length; i++) {
