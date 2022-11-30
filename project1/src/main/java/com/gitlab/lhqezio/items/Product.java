@@ -40,16 +40,16 @@ public abstract class Product extends Item {
 
     @Override
     public String toString() {
-        return getManufacturer() + " " + getName() + "\n" + getPrice() + "\n" + getDescription() + "\n";
+        return getManufacturer() + " " + getName() + "\n" + Math.round(getPrice()) +"$  NOW ONLY: "+ Math.round(getPrice()-getDiscount())+"$\n"+getDiscountPercentage()+"% OFF"+ "\n" + getDescription() + "\n";
     }
 
     public abstract String getCategory();
 
     public double getDiscountPercentage() {
-        return (getDiscount() / getPrice()) * 100;
+        return Math.ceil((getDiscount() / getPrice()) * 100);
     }
 
     public int discountCompareTo(Product other) {
-        return this.getDiscountPercentage() > other.getDiscountPercentage() ? 1 : -1;
+        return this.getDiscountPercentage() < other.getDiscountPercentage() ? 1 : -1;
     }
 }

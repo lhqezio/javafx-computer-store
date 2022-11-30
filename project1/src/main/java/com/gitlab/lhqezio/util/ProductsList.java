@@ -19,7 +19,7 @@ public class ProductsList {
 
     public List<Product> getProductsOfTheDay() {
         List<Product> productsOfTheDay = new ArrayList<>();
-        products.stream().filter(product -> product.getDiscount() > 0).forEach(productsOfTheDay::add);
+        products.stream().filter(product -> product.getDiscount() > 0 && product.getQuantity()>0).forEach(productsOfTheDay::add);
         productsOfTheDay.sort((o1, o2) -> (int) (o1.discountCompareTo(o2)));
         if (productsOfTheDay.size() > 5) {
             return productsOfTheDay.subList(0, 5);
