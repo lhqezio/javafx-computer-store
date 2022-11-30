@@ -1,13 +1,8 @@
 package com.gitlab.lhqezio;
 
 import com.gitlab.lhqezio.gui.DisplayGui;
-import com.gitlab.lhqezio.items.Product;
 import com.gitlab.lhqezio.user.*;
 import com.gitlab.lhqezio.util.ProductsList;
-
-import java.util.List;
-import java.util.Scanner;
-
 
 import javafx.application.Application;
 import javafx.scene.Group;
