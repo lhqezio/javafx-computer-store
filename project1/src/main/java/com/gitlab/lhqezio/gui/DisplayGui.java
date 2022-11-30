@@ -34,11 +34,12 @@ public class DisplayGui {
     private Button menuButton = new Button("Menu");
     private Button cartButton = new Button("Cart");
     private HBox buttons;
+    private ListView<Product> cartView;
     public DisplayGui(){
         login = new Button("Login");
         username = new TextField();
         password = new PasswordField();
-        menuButtonHandler();
+        buttonHandler();
     }
     public Group login(){
         VBox vBox = new VBox(8);
@@ -105,8 +106,11 @@ public class DisplayGui {
                 Label status = new Label("Low Stock!!!");
                 productDetails.getChildren().add(status);
             }
-            Label desc = new Label("Description:\n"+product.getDescription());;
+            Label desc = new Label("Description:\n"+product.getDescription());
             Button addToCart = new Button("Add To Cart");
+            addToCart.setOnAction(e1 -> {
+                addToCart(product);
+            });
             productDetails.getChildren().addAll(desc,addToCart);
             productDetails.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
             if(menuContainer.getChildren().size()==1){
@@ -149,12 +153,37 @@ public class DisplayGui {
             productDetails(listView);
         });
     }
-    private void menuButtonHandler(){
+    private void buttonHandler(){
         this.menuButton.setOnAction(e -> {
             menuContainer.getChildren().clear();
             menuContainer.getChildren().addAll(menu);
             buttons.getChildren().clear();
             buttons.getChildren().addAll(cartButton, searchMenuButton);
+            VBox temp = (VBox)menuContainer.getChildren().get(0);
+            temp.getChildren().add(buttons);
         });
+        this.cartButton.setOnAction(e -> {
+            menuContainer.getChildren().clear();
+            menuContainer.getChildren().addAll(cart());
+            buttons.getChildren().clear();
+            buttons.getChildren().addAll(menuButton, searchMenuButton);
+            VBox temp = (VBox)menuContainer.getChildren().get(0);
+            temp.getChildren().add(buttons);
+        });
+    }
+    private void addToCart(Product product){
+        pl.addToCart(product);
+    }
+    private VBox cart(){
+        Label header = new Label("Cart");
+        ObservableList<Product> cart = FXCollections.observableArrayList(pl.getCart());
+        cartView = createProdList(cart);
+        productDetails(cartView);
+        buttons.getChildren().clear();
+        buttons.getChildren().addAll(menuButton);
+        VBox cartBox = new VBox(8);
+        cartBox.getChildren().addAll(header, cartView);
+        cartBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
+        return cartBox;
     }
 }

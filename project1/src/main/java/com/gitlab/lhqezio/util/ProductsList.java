@@ -8,6 +8,8 @@ import java.util.List;
 
 public class ProductsList {
     private List<Product> products;
+    private List<Product> cart;
+    private ArrayList<Integer> cartQuantity;
     private HashMap<String, HashMap<String, List<Product>>> productsDictionary;
 
     public ProductsList() {
@@ -15,6 +17,8 @@ public class ProductsList {
         String[][] allRowsArr = dataLoader.getData("products.csv");
         this.products = CSV_Util.parseProduct(allRowsArr);
         initProductDictionary();
+        cart = new ArrayList<Product>();
+        cartQuantity = new ArrayList<Integer>();
     }
 
     public List<Product> getProductsOfTheDay() {
@@ -117,5 +121,28 @@ public class ProductsList {
     public List<Product> getList(){
         return this.products;
     }
-
+    public void addToCart(Product product){
+        if(cart.contains(product)){
+            int itemPos = cart.indexOf(product);
+            int b = cartQuantity.get(itemPos);
+            cartQuantity.set(itemPos, b+1);
+        }
+        else{
+            cart.add(product);
+            cartQuantity.add(1);
+        }
+    }
+    public void removeFromCart(Product product){
+        int val= cartQuantity.get(cart.indexOf(product));
+        if(val>1){
+            cartQuantity.set(cart.indexOf(product), val-1);
+        }
+        else{
+            cart.remove(product);
+            cartQuantity.remove(cart.indexOf(product));
+        }
+    }
+    public List<Product> getCart(){
+        return this.cart;
+    }
 }

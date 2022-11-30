@@ -5,6 +5,7 @@ public abstract class Product extends Item {
     private int quantity;
     private String description;
     private double discount;
+    private int cartQuantity;
 
     public Product(String name, String manufacturer, double price, double discount, int quantity, String description, String id) {
         super(name, manufacturer, description, id);
@@ -12,6 +13,7 @@ public abstract class Product extends Item {
         this.quantity = quantity;
         this.description = description;
         this.discount = discount;
+        this.cartQuantity = 0;
     }
 
     public double getPrice() {
@@ -53,3 +55,4 @@ public abstract class Product extends Item {
         return this.getDiscountPercentage() < other.getDiscountPercentage() ? 1 : -1;
     }
 }
+
