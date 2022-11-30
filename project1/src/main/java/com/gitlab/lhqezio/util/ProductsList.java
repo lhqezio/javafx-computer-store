@@ -10,9 +10,8 @@ public class ProductsList {
     private List<Product> products;
     private HashMap<String, HashMap<String, List<Product>>> productsDictionary;
 
-    public ProductsList() {
-        DataLoader dataLoader = new CsvLoader();
-        String[][] allRowsArr = dataLoader.getData("products.csv");
+    public ProductsList(DataLoader dataLoader) {
+        String[][] allRowsArr = dataLoader.getProductsData();
         this.products = CSV_Util.parseProduct(allRowsArr);
         initProductDictionary();
     }
