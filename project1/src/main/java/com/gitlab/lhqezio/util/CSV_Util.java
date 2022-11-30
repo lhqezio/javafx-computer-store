@@ -14,7 +14,8 @@ import com.gitlab.lhqezio.items.Product;
 
 public class CSV_Util {
 
-    public static String[][] parseCSV(byte[] buf) {
+
+    public static int[] parseCSV_getRowCol(byte[] buf) {
         // get length
         int colCount = 0;
 
@@ -83,9 +84,12 @@ public class CSV_Util {
             c--;
         }
         int rowCount = linesCount - trailingNewlines;
+        return new int[]{rowCount, colCount};
+    }
 
-        // System.out.println(colCount);
-        // System.out.println(rowCount);
+    public static String[][] parseCSV_fromRowCol(byte[] buf, int[] rowCol) {
+        int rowCount = rowCol[0];
+        int colCount = rowCol[1];
 
         String[][] allRowsArr = new String[rowCount][];
         String[] rowArr = new String[colCount];
@@ -95,8 +99,8 @@ public class CSV_Util {
         int fieldIdx = 0;
 
         try {
-            c = 0;
-            character = buf[c];
+            int c = 0;
+            int character = buf[c];
             int cBak;
             outer:
             while (true) {
@@ -179,7 +183,10 @@ public class CSV_Util {
             System.out.println(e);
             return new String[][]{};
         }
+    }
 
+    public static String[][] parseCSV(byte[] buf) {
+        return parseCSV_fromRowCol(buf, parseCSV_getRowCol(buf));
     }
 
     public static byte[] readBytesAdd2Newline(Path path) throws IOException {
