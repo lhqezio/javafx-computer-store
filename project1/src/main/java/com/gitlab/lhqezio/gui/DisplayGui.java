@@ -3,6 +3,8 @@ package com.gitlab.lhqezio.gui;
 import java.util.List;
 
 import com.gitlab.lhqezio.items.Product;
+import com.gitlab.lhqezio.user.Auth;
+import com.gitlab.lhqezio.util.DataLoader;
 import com.gitlab.lhqezio.util.ProductsList;
 
 import javafx.collections.FXCollections;
@@ -18,6 +20,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class DisplayGui {
     private ProductsList pl;
@@ -36,13 +39,32 @@ public class DisplayGui {
     private HBox buttons;
     private ListView<Product> cartView;
     private Button checkout = new Button("Checkout");
-    public DisplayGui(){
+
+    public DisplayGui(Stage primaryStage, DataLoader dataLoader) {
         login = new Button("Login");
+
+        Auth auth = new Auth(dataLoader);
+        login.setOnAction(e -> {
+                int retVal = auth.check(this.getUsername(), this.getPassword().toCharArray());
+                if(retVal == 0){
+                    ProductsList pl = new ProductsList(dataLoader);
+                    primaryStage.setScene(this.menu(pl));
+                }
+                else{
+                    Group loginFailed = this.login();
+                    VBox v = (VBox)loginFailed.getChildren().get(0);
+                    v.getChildren().add(new Label("Login Failed"));
+                    primaryStage.setScene(new Scene(loginFailed));
+                }
+                primaryStage.show();
+        });
+
         username = new TextField();
         password = new PasswordField();
         buttonHandler();
     }
-    public Group login(){
+
+    public Group login() {
         VBox vBox = new VBox(8);
         Label header = new Label("Computer Shop");
         Label messUsr = new Label("Username:");
@@ -53,16 +75,19 @@ public class DisplayGui {
         return root;
     }
 
-    public Button getLoginButton(){
+    public Button getLoginButton() {
         return login;
     }
-    public String getUsername(){
+
+    public String getUsername() {
         return username.getText();
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return password.getText();
     }
-    public Scene menu(ProductsList products){
+
+    public Scene menu(ProductsList products) {
         this.pl = products;
         Label header = new Label("Products Of The Day");
         ObservableList<Product> productsOfTheDay = FXCollections.observableArrayList(pl.getProductsOfTheDay());
@@ -80,7 +105,7 @@ public class DisplayGui {
         this.menu = new VBox(8);
         menu.getChildren().addAll(header, listView, buttons);
         menu.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
-        menuContainer= new HBox(8);
+        menuContainer = new HBox(8);
         menuContainer.getChildren().addAll(menu);
         Group root = new Group(menuContainer);
         Scene scene = new Scene(root);
@@ -100,8 +125,8 @@ public class DisplayGui {
             Label category = new Label(product.getCategory());
             Label name = new Label(product.getName());
             Label manu = new Label(product.getManufacturer());
-            Label rprice = new Label("ORIGINAL PRICE: "+String.valueOf(product.getPrice())+"$");
-            Label oprice = new Label("OUR PRICE: "+String.valueOf(product.getPrice()-product.getDiscount())+"$");
+            Label rprice = new Label("ORIGINAL PRICE: " + String.valueOf(product.getPrice()) + "$");
+            Label oprice = new Label("OUR PRICE: " + String.valueOf(product.getPrice() - product.getDiscount()) + "$");
             productDetails.getChildren().addAll(category, name, manu, rprice, oprice);
             if(!inCart){
                 if(product.getQuantity()<5){
@@ -134,16 +159,16 @@ public class DisplayGui {
                 productDetails.getChildren().addAll(removeFromCart,inCartQty);
             }
             productDetails.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
-            if(menuContainer.getChildren().size()==1){
+            if (menuContainer.getChildren().size() == 1) {
                 menuContainer.getChildren().add(productDetails);
-            }
-            else{
+            } else {
                 menuContainer.getChildren().set(1, productDetails);
             }
         });
     }
-    public VBox search(){
-        ObservableList<String> searchFilter = FXCollections.observableArrayList("Search By Name", "Search By Category","Search By Price", "Search By Manufacturer");
+
+    public VBox search() {
+        ObservableList<String> searchFilter = FXCollections.observableArrayList("Search By Name", "Search By Category", "Search By Price", "Search By Manufacturer");
         comboBox = new ComboBox(searchFilter);
         searchField = new TextField();
         searchField.setPromptText("Enter Keyword");
@@ -158,17 +183,18 @@ public class DisplayGui {
         return searchBox;
 
     }
-    private void searchButtonHandler(){
+
+    private void searchButtonHandler() {
         this.searchButton.setOnAction(e -> {
             int index = comboBox.getSelectionModel().getSelectedIndex();
             System.out.println(index);
-            char selection = Integer.toString(index+1).charAt(0);;
+            char selection = Integer.toString(index + 1).charAt(0);
+            ;
             System.out.println(selection);
             ListView<Product> listView = createProdList(pl.filterBy(selection, searchField.getText()));
-            if(searchBox.getChildren().size()==3){
+            if (searchBox.getChildren().size() == 3) {
                 searchBox.getChildren().add(listView);
-            }
-            else{
+            } else {
                 searchBox.getChildren().set(3, listView);
             }
             productDetails(listView,false);

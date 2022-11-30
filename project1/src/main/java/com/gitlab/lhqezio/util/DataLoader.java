@@ -1,5 +1,6 @@
 package com.gitlab.lhqezio.util;
 
 public interface DataLoader {
-    public String[][] getData(String filename);
+    public String[][] getUsersData();
+    public String[][] getProductsData();
 }
