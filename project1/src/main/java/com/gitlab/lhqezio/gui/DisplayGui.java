@@ -29,10 +29,16 @@ public class DisplayGui {
     private ComboBox comboBox;
     private TextField searchField;
     private VBox searchBox;
+    private VBox menu;
+    private Button searchMenuButton = new Button("Search");
+    private Button menuButton = new Button("Menu");
+    private Button cartButton = new Button("Cart");
+    private HBox buttons;
     public DisplayGui(){
         login = new Button("Login");
         username = new TextField();
         password = new PasswordField();
+        menuButtonHandler();
     }
     public Scene login(){
         VBox vBox = new VBox(8);
@@ -61,19 +67,20 @@ public class DisplayGui {
         ObservableList<Product> productsOfTheDay = FXCollections.observableArrayList(pl.getProductsOfTheDay());
         ListView<Product>listView = createProdList(productsOfTheDay);
         productDetails(listView);
-        Button searchButton = new Button("Search");
-        searchButton.setOnAction(e -> {
+        
+        searchMenuButton.setOnAction(e -> {
             menuContainer.getChildren().clear();
             menuContainer.getChildren().addAll(search());
         });
-        Button cartButton = new Button("Cart");
-        searchButton.setPrefSize(100, 20);
+        buttons = new HBox(8);
+        buttons.getChildren().addAll(cartButton, searchMenuButton);
+        searchMenuButton.setPrefSize(100, 20);
         cartButton.setPrefSize(100, 20);
-        VBox vBox = new VBox(8);
-        vBox.getChildren().addAll(header, listView, searchButton, cartButton);
-        vBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
+        this.menu = new VBox(8);
+        menu.getChildren().addAll(header, listView, buttons);
+        menu.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
         menuContainer= new HBox(8);
-        menuContainer.getChildren().addAll(vBox);
+        menuContainer.getChildren().addAll(menu);
         Group root = new Group(menuContainer);
         Scene scene = new Scene(root);
         return scene;
@@ -119,8 +126,10 @@ public class DisplayGui {
         this.searchButton = new Button("Search");
         searchButtonHandler();
         comboBox.getSelectionModel().selectFirst();
+        HBox buttons = new HBox(8);
+        buttons.getChildren().addAll(searchButton, menuButton, cartButton);
         searchBox = new VBox(8);
-        searchBox.getChildren().addAll(comboBox, searchField, searchButton);
+        searchBox.getChildren().addAll(comboBox, searchField, buttons);
         searchBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
         return searchBox;
 
@@ -139,6 +148,14 @@ public class DisplayGui {
                 searchBox.getChildren().set(3, listView);
             }
             productDetails(listView);
+        });
+    }
+    private void menuButtonHandler(){
+        this.menuButton.setOnAction(e -> {
+            menuContainer.getChildren().clear();
+            menuContainer.getChildren().addAll(menu);
+            buttons.getChildren().clear();
+            buttons.getChildren().addAll(cartButton, searchMenuButton);
         });
     }
 }
