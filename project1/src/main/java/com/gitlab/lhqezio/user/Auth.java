@@ -45,7 +45,9 @@ public class Auth {
             this.byUsername.put(rowArr[0], new UserData(rowArr[1], rowArr[2], rowArr[3]));
         }
     }
-
+    /**
+     * @return 0 if login successful, 2 if password incorrect, 1 if username not found
+     */
     public int check(String username_, char[] password) {
         UserData userData_ = this.byUsername.get(username_);
         if (userData_ == null) {

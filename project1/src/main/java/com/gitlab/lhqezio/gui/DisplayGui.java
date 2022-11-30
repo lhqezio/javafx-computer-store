@@ -40,7 +40,7 @@ public class DisplayGui {
         password = new PasswordField();
         menuButtonHandler();
     }
-    public Scene login(){
+    public Group login(){
         VBox vBox = new VBox(8);
         Label header = new Label("Computer Shop");
         Label messUsr = new Label("Username:");
@@ -48,8 +48,7 @@ public class DisplayGui {
         vBox.getChildren().addAll(header, messUsr, username, messPass, password, login);
         vBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
         Group root = new Group(vBox);
-        Scene scene = new Scene(root);
-        return scene;
+        return root;
     }
 
     public Button getLoginButton(){
