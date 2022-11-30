@@ -34,7 +34,7 @@ public class App extends Application {
             Auth auth = new Auth();
                 int retVal = auth.check(dg.getUsername(), dg.getPassword().toCharArray());
                 if(retVal == 0){
-                    primaryStage.setScene(dg.menu(pl.getProductsOfTheDay()));
+                    primaryStage.setScene(dg.menu(pl));
                 }
                 else{
                     primaryStage.setScene(new Scene(new Label("Login Failed")));
