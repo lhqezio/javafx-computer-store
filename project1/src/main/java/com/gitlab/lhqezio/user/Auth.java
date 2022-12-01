@@ -1,6 +1,5 @@
 package com.gitlab.lhqezio.user;
 
-import java.io.Console;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import com.gitlab.lhqezio.util.CsvLoader;
 import com.gitlab.lhqezio.util.DataLoader;
 
 class UserData { //use this instead of String[3]
@@ -33,9 +31,9 @@ public class Auth {
     private String savedPrivilegeLevel;
     private String savedUsername;
 
-    public Auth() {
-        DataLoader dataLoader = new CsvLoader();
-        String[][] allRowsArr = dataLoader.getData("users.csv");
+    public Auth(DataLoader dataLoader) {
+
+        String[][] allRowsArr = dataLoader.getUsersData();
         for (int i = 0; i < allRowsArr.length; i++) {
             String[] rowArr = allRowsArr[i];
             this.byUsername.put(rowArr[0], new UserData(rowArr[1], rowArr[2], rowArr[3]));
@@ -80,21 +78,4 @@ public class Auth {
         return null;
     }
 
-    public void login() {
-        Console myConsole = System.console();
-        String username;
-        while (true) {
-            System.out.println("Enter your username:");
-            username = myConsole.readLine();
-            System.out.println("Enter your password:");
-            char[] password_ = myConsole.readPassword();
-            int retValue = this.check(username, password_);
-            //do NOT tell users that their username is incorrect, you can find users that way, usually there's a "forgot username" button, send email
-            if (retValue != 0) {
-                System.out.println("incorrect credentials, try again");
-                continue;
-            }
-            break;
-        }
-    }
 }

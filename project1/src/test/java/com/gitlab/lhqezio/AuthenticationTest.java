@@ -2,9 +2,13 @@ package com.gitlab.lhqezio;
 
 import static org.junit.Assert.assertEquals;
 
+import java.nio.file.Paths;
+
 import org.junit.Test;
 
 import com.gitlab.lhqezio.user.Auth;
+import com.gitlab.lhqezio.util.CsvLoader;
+import com.gitlab.lhqezio.util.DataLoader;
 
 /**
  * Unit test for simple App.
@@ -14,7 +18,8 @@ public class AuthenticationTest
     @Test
     public void authenticationTest()
     {
-        Auth auth = new Auth();
+        DataLoader dataLoader = new CsvLoader(Paths.get("test_csv_files"));
+        Auth auth = new Auth(dataLoader);
 
         assertEquals(0, auth.check("someone", "abc".toCharArray()));
         assertEquals(2, auth.check("someone", "acc".toCharArray()));
