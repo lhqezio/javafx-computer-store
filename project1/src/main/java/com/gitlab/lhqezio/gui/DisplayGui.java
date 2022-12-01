@@ -35,6 +35,7 @@ public class DisplayGui {
     private Button cartButton = new Button("Cart");
     private HBox buttons;
     private ListView<Product> cartView;
+    private Button checkout = new Button("Checkout");
     public DisplayGui(){
         login = new Button("Login");
         username = new TextField();
@@ -66,7 +67,7 @@ public class DisplayGui {
         Label header = new Label("Products Of The Day");
         ObservableList<Product> productsOfTheDay = FXCollections.observableArrayList(pl.getProductsOfTheDay());
         ListView<Product>listView = createProdList(productsOfTheDay);
-        productDetails(listView);
+        productDetails(listView,false);
         
         searchMenuButton.setOnAction(e -> {
             menuContainer.getChildren().clear();
@@ -86,13 +87,13 @@ public class DisplayGui {
         return scene;
     }
     private ListView<Product> createProdList(List<Product> products){
-        ObservableList<Product> productsOfTheDay = FXCollections.observableArrayList(products);
-        ListView<Product> listView = new ListView<>(productsOfTheDay);
+        ObservableList<Product> productsList = FXCollections.observableList(products);
+        ListView<Product> listView = new ListView<>(productsList);
         listView.setPrefSize(200, 250);
         listView.setOrientation(Orientation.VERTICAL);
         return listView;
     }
-    private void productDetails(ListView<Product> listView){
+    private void productDetails(ListView<Product> listView,boolean inCart){
         listView.setOnMouseClicked(e -> {
             VBox productDetails = new VBox(8);
             Product product = listView.getSelectionModel().getSelectedItem();
@@ -102,16 +103,36 @@ public class DisplayGui {
             Label rprice = new Label("ORIGINAL PRICE: "+String.valueOf(product.getPrice())+"$");
             Label oprice = new Label("OUR PRICE: "+String.valueOf(product.getPrice()-product.getDiscount())+"$");
             productDetails.getChildren().addAll(category, name, manu, rprice, oprice);
-            if(product.getQuantity()<5){
-                Label status = new Label("Low Stock!!!");
-                productDetails.getChildren().add(status);
+            if(!inCart){
+                if(product.getQuantity()<5){
+                    Label status = new Label("Low Stock!!!");
+                    productDetails.getChildren().add(status);
+                }
+                else if(product.getQuantity()==0){
+                    Label status = new Label("Out Of Stock!!!");
+                    productDetails.getChildren().add(status);
+                }
+                Label desc = new Label("Description:\n"+product.getDescription());
+                if(product.getDiscount()>0){
+                    Button addToCart = new Button("Add To Cart");
+                    addToCart.setOnAction(e1 -> {
+                        addToCart(product);
+                    });
+                    productDetails.getChildren().addAll(desc,addToCart);
+                }
+                else{
+                    productDetails.getChildren().add(desc);
+                }
             }
-            Label desc = new Label("Description:\n"+product.getDescription());
-            Button addToCart = new Button("Add To Cart");
-            addToCart.setOnAction(e1 -> {
-                addToCart(product);
-            });
-            productDetails.getChildren().addAll(desc,addToCart);
+            else {
+                Button removeFromCart = new Button("Remove From Cart");
+                removeFromCart.setOnAction(e1 -> {
+                    pl.removeFromCart(product);
+                    cartButton.fire();
+                });
+                Label inCartQty = new Label("In Cart: "+String.valueOf(pl.getCartQuantity(product)));
+                productDetails.getChildren().addAll(removeFromCart,inCartQty);
+            }
             productDetails.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
             if(menuContainer.getChildren().size()==1){
                 menuContainer.getChildren().add(productDetails);
@@ -150,7 +171,7 @@ public class DisplayGui {
             else{
                 searchBox.getChildren().set(3, listView);
             }
-            productDetails(listView);
+            productDetails(listView,false);
         });
     }
     private void buttonHandler(){
@@ -166,7 +187,7 @@ public class DisplayGui {
             menuContainer.getChildren().clear();
             menuContainer.getChildren().addAll(cart());
             buttons.getChildren().clear();
-            buttons.getChildren().addAll(menuButton, searchMenuButton);
+            buttons.getChildren().addAll(menuButton, searchMenuButton, checkout);
             VBox temp = (VBox)menuContainer.getChildren().get(0);
             temp.getChildren().add(buttons);
         });
@@ -178,12 +199,13 @@ public class DisplayGui {
         Label header = new Label("Cart");
         ObservableList<Product> cart = FXCollections.observableArrayList(pl.getCart());
         cartView = createProdList(cart);
-        productDetails(cartView);
+        productDetails(cartView,true);
         buttons.getChildren().clear();
         buttons.getChildren().addAll(menuButton);
         VBox cartBox = new VBox(8);
-        cartBox.getChildren().addAll(header, cartView);
         cartBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
+        Label total = new Label("Total: "+String.valueOf(pl.getTotal())+"$\n"+"Total Qty: "+String.valueOf(pl.getQty()));
+        cartBox.getChildren().addAll(header, cartView,checkout,total);
         return cartBox;
     }
 }

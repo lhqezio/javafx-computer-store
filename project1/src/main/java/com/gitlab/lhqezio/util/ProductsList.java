@@ -133,16 +133,40 @@ public class ProductsList {
         }
     }
     public void removeFromCart(Product product){
-        int val= cartQuantity.get(cart.indexOf(product));
-        if(val>1){
-            cartQuantity.set(cart.indexOf(product), val-1);
-        }
-        else{
-            cart.remove(product);
-            cartQuantity.remove(cart.indexOf(product));
+        if(cart.size() > 0){
+            int itemPos = cart.indexOf(product);
+            int b = cartQuantity.get(itemPos);
+            if(b > 1){
+                cartQuantity.set(itemPos, b-1);
+            }
+            else{
+                cart.remove(itemPos);
+                cartQuantity.remove(itemPos);
+            }
         }
     }
     public List<Product> getCart(){
         return this.cart;
+    }
+    public int getCartQuantity(Product product){
+        if(cart.contains(product)){
+            int itemPos = cart.indexOf(product);
+            return cartQuantity.get(itemPos);
+        }
+        return 0;
+    }
+    public int getQty(){
+        int qty = 0;
+        for(int i = 0; i < cartQuantity.size(); i++){
+            qty += cartQuantity.get(i);
+        }
+        return qty;
+    }
+    public double getTotal(){
+        double total = 0;
+        for(int i = 0; i < cart.size(); i++){
+            total += (cart.get(i).getPrice()-cart.get(i).getDiscount()) * cartQuantity.get(i);
+        }
+        return total;
     }
 }
