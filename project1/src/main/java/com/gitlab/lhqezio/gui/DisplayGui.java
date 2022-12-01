@@ -104,24 +104,24 @@ public class DisplayGui {
             Label oprice = new Label("OUR PRICE: "+String.valueOf(product.getPrice()-product.getDiscount())+"$");
             productDetails.getChildren().addAll(category, name, manu, rprice, oprice);
             if(!inCart){
-                if(product.getQuantity()<5){
-                    Label status = new Label("Low Stock!!!");
-                    productDetails.getChildren().add(status);
+                int availableqty = product.getQuantity()-pl.getCartQuantity(product);
+                Label desc = new Label("Description: "+product.getDescription());
+                if(availableqty==0){
+                    Label status = new Label("OOS");
+                    productDetails.getChildren().addAll(desc,status);
                 }
-                else if(product.getQuantity()==0){
-                    Label status = new Label("Out Of Stock!!!");
-                    productDetails.getChildren().add(status);
-                }
-                Label desc = new Label("Description:\n"+product.getDescription());
-                if(product.getDiscount()>0){
+                else{
                     Button addToCart = new Button("Add To Cart");
                     addToCart.setOnAction(e1 -> {
                         addToCart(product);
+                        int curAvQty = product.getQuantity()-pl.getCartQuantity(product);
+                        if (curAvQty == 0 ){
+                            productDetails.getChildren().remove(6);
+                            Label status = new Label("OOS");
+                            productDetails.getChildren().add(status);
+                        }
                     });
                     productDetails.getChildren().addAll(desc,addToCart);
-                }
-                else{
-                    productDetails.getChildren().add(desc);
                 }
             }
             else {
