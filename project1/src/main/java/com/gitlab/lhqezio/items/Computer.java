@@ -8,14 +8,14 @@ public class Computer extends Product {
     private String operatingSystem;
     private int capacity;
 
-    public Computer(String name, String manufacturer, double price, double discount, int quantity, String description, String id, String processor, String ram, String hardDrive, String graphicsCard, String operatingSystem, int capacity) {
-        super(name, manufacturer, price, discount, quantity, description, id);
-        this.processor = processor;
-        this.ram = ram;
-        this.hardDrive = hardDrive;
-        this.graphicsCard = graphicsCard;
-        this.operatingSystem = operatingSystem;
-        this.capacity = capacity;
+    public Computer(String name_, String manufacturer_, double price_, double discount_, int quantity_, String description_, String id_, String processor_, String ram_, String hardDrive_, int capacity_, String graphicsCard_, String operatingSystem_) {
+        super(name_, manufacturer_, price_, discount_, quantity_, description_, id_);
+        this.processor = processor_;
+        this.ram = ram_;
+        this.hardDrive = hardDrive_;
+        this.capacity = capacity_;
+        this.graphicsCard = graphicsCard_;
+        this.operatingSystem = operatingSystem_;
     }
 
     public String getCategory() {

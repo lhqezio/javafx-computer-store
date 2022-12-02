@@ -13,8 +13,7 @@ public class ProductsList {
     private HashMap<String, HashMap<String, List<Product>>> productsDictionary;
 
     public ProductsList(DataLoader dataLoader) {
-        String[][] allRowsArr = dataLoader.getProductsData();
-        this.products = CSV_Util.parseProduct(allRowsArr);
+        this.products = dataLoader.getProductsData();
         initProductDictionary();
         cart = new ArrayList<Product>();
         cartQuantity = new ArrayList<Integer>();
