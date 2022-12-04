@@ -21,16 +21,16 @@ public class DataLoaderTest {
         List<Product> products = dataLoader.getProductsData();
 
         Computer firstProduct = (Computer)products.get(0);
-        Computer expected = new Computer("iMac Pro","Apple",2000,5,10,"Thin And Light","Leno01","Intel Core i7","16GB", "NVMe", 1000, "Nvidia GTX 1050","Windows 10");
+        Computer expected = new Computer(0,"iMac Pro","Apple","Thin And Light",2000,500,10,"Intel Core i7","16GB","NVMe",1000,"Nvidia GTX 1050","Windows 10");
 
         //I'm not gonna write add an equals method to the Object
+        assertEquals(firstProduct.getId(), expected.getId());
         assertEquals(firstProduct.getName(), expected.getName());
         assertEquals(firstProduct.getManufacturer(), expected.getManufacturer());
+        assertEquals(firstProduct.getDescription(), expected.getDescription());
         assertEquals(firstProduct.getPrice(), expected.getPrice(), DELTA);
         assertEquals(firstProduct.getDiscount(), expected.getDiscount(), DELTA);
         assertEquals(firstProduct.getQuantity(), expected.getQuantity());
-        assertEquals(firstProduct.getDescription(), expected.getDescription());
-        assertEquals(firstProduct.getID(), expected.getID());
         assertEquals(firstProduct.getProcessor(), expected.getProcessor());
         assertEquals(firstProduct.getRam(), expected.getRam());
         assertEquals(firstProduct.getHardDrive(), expected.getHardDrive());
