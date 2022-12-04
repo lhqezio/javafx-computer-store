@@ -2,6 +2,8 @@ package com.gitlab.lhqezio.gui;
 
 import java.util.List;
 import com.gitlab.lhqezio.items.Product;
+import com.gitlab.lhqezio.items.Computer;
+import com.gitlab.lhqezio.items.Laptop;
 import com.gitlab.lhqezio.user.Auth;
 import com.gitlab.lhqezio.util.DataLoader;
 import com.gitlab.lhqezio.util.ProductsList;
@@ -167,6 +169,19 @@ public class DisplayGui {
             Label rprice = new Label("ORIGINAL PRICE: " + String.valueOf(product.getPrice()) + "$");
             Label oprice = new Label("OUR PRICE: " + String.valueOf(product.getPrice() - product.getDiscount()) + "$");
             productDetails.getChildren().addAll(category, name, manu, rprice, oprice);
+            if(product.getCategory().equals("Computer")||product.getCategory().equals("Laptop")){
+                Label cpu = new Label("CPU: " + ((Computer)product).getProcessor());
+                Label ram = new Label("RAM: " + ((Computer)product).getRam());
+                Label hType = new Label("Storage Type: " + ((Computer)product).getHardDrive());
+                Label hSize = new Label("Storage Size: " + ((Computer)product).getCapacity());
+                Label gpu = new Label("GPU: " + ((Computer)product).getGraphicsCard());
+                Label os = new Label("OS: " + ((Computer)product).getOperatingSystem());
+                productDetails.getChildren().addAll(cpu, ram, hType, hSize, gpu, os);
+                if(product.getCategory().equals("Laptop")){
+                    Label battery = new Label("Battery Hours: Up to " + ((Laptop)product).getBatteryLife()+" hours");
+                    productDetails.getChildren().addAll(battery);
+                }
+            }
             if(!inCart){
                 int availableqty = product.getQuantity()-pl.getCartQuantity(product);
                 Label desc = new Label("Description: "+product.getDescription());
