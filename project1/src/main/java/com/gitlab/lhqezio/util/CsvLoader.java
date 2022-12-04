@@ -1,5 +1,8 @@
 package com.gitlab.lhqezio.util;
-
+/*
+ * CsvLoader class. used to load csv file.
+ * @author Fu Pei
+ */
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;

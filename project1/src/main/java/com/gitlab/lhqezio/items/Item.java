@@ -1,4 +1,8 @@
 package com.gitlab.lhqezio.items;
+/**
+ * Item abstract class.
+ * @author Hoang
+ */
 
 public abstract class Item {
     private String name;

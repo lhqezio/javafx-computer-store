@@ -1,4 +1,8 @@
 package com.gitlab.lhqezio.items;
+/**
+ * Laptop class.
+ * @author Hoang
+ */
 
 public class Laptop extends Computer {
     private int batteryLife;

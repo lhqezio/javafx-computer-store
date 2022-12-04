@@ -1,4 +1,9 @@
 package com.gitlab.lhqezio;
+/**
+ * Unit test for ProductList class and all of its methods.
+ * @author Hoang
+ */
+
 
 import static org.junit.Assert.assertEquals;
 

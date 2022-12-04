@@ -2,6 +2,7 @@
  * Display class handles the display of the application via Command Line.
  * It's non static and it's tailored to different users depends on their name and priviledges.
  * It's also handle nenu specific user input.
+ * @author Hoang
  */
 package com.gitlab.lhqezio.cli;
 

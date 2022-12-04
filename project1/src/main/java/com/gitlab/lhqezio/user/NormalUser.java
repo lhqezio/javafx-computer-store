@@ -1,4 +1,8 @@
 package com.gitlab.lhqezio.user;
+/**
+ * NormalUser class.
+ * @author Fu Pei
+ */
 
 public class NormalUser extends User {
 

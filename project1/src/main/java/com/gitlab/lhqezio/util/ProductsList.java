@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+/**
+ * ProductList Class that contains the majority of business logic.
+ * @author Hoang
+ */
 
 public class ProductsList {
     private List<Product> products;

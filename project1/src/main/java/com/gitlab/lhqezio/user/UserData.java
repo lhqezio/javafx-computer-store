@@ -1,5 +1,8 @@
 package com.gitlab.lhqezio.user;
-
+/**
+ * User class that stores the user's name and privilege level.
+ * @author Fu Pei
+ */
 public class UserData {
 
     private String username;

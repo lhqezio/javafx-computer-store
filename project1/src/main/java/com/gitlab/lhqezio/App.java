@@ -1,5 +1,8 @@
 package com.gitlab.lhqezio;
-
+/**
+ * App class.
+ * @author Hoang
+ */
 import java.nio.file.Paths;
 
 import com.gitlab.lhqezio.gui.DisplayGui;

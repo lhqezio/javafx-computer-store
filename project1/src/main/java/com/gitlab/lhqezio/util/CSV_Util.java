@@ -1,5 +1,8 @@
 package com.gitlab.lhqezio.util;
-
+/**
+ * CSV_Util class, used to read and write CSV files. And various other utilities
+ * @author Fu Pei
+ */
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;

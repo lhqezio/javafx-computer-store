@@ -11,8 +11,10 @@ import com.gitlab.lhqezio.util.CsvLoader;
 import com.gitlab.lhqezio.util.DataLoader;
 
 /**
- * Unit test for simple App.
+ * Unit test for Authentication.
+ * @author Fu Pei
  */
+
 public class AuthenticationTest
 {
     @Test
