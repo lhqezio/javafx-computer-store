@@ -1,4 +1,8 @@
 package com.gitlab.lhqezio.user;
+/**
+ * Auth class used to authenticate user.
+ * @author Fu Pei
+ */
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;

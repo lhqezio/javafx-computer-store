@@ -1,5 +1,8 @@
 package com.gitlab.lhqezio.items;
-
+/**
+ * Computer class.
+ * @author Hoang
+ */
 public class Computer extends Product {
     private String processor;
     private String ram;

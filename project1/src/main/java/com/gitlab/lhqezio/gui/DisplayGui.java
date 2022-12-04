@@ -20,6 +20,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+/**
+ * This class is responsible for displaying the GUI.
+ * Scene Injections are used to display the different scenes.
+ * This Scene is divided into 2 sections: the left section and the right section.
+ * The left section is responsible for displaying the list of products.
+ * The right section is responsible for displaying the details of the selected product.
+ * And based on which menu the user is in, the left section will display different information.
+ * @author Hoang
+ */
 
 public class DisplayGui {
     private ProductsList pl;
@@ -38,7 +47,11 @@ public class DisplayGui {
     private HBox buttons;
     private ListView<Product> cartView;
     private Button checkout;
-
+    /**
+     * This constructor is responsible for initializing the GUI and the login page .
+     * @param primaryStage
+     * @param dataLoader
+     */
     public DisplayGui(Stage primaryStage, DataLoader dataLoader) {
         login = new Button("Login");
 
@@ -69,7 +82,10 @@ public class DisplayGui {
         password = new PasswordField();
         buttonHandler();
     }
-
+    /**
+     * This method return a Group object that contains the login page.
+     * @return Group
+     */
     public Group login() {
         VBox vBox = new VBox(8);
         Label header = new Label("Computer Shop");
@@ -80,7 +96,9 @@ public class DisplayGui {
         Group root = new Group(vBox);
         return root;
     }
-
+    /**
+     *This method is resposible for getting the username password and login button from the login page.
+     */
     public Button getLoginButton() {
         return login;
     }
@@ -92,6 +110,11 @@ public class DisplayGui {
     public String getPassword() {
         return password.getText();
     }
+    /**
+     * This method is responsible for displaying the menu page.
+     * @param pl
+     * @return Scene
+     */
 
     public Scene menu(ProductsList products) {
         this.pl = products;
@@ -117,6 +140,10 @@ public class DisplayGui {
         Scene scene = new Scene(root);
         return scene;
     }
+    /**
+     * This method is responsible for creating the listview of products.
+     * @return listview
+     */
     private ListView<Product> createProdList(List<Product> products){
         ObservableList<Product> productsList = FXCollections.observableList(products);
         ListView<Product> listView = new ListView<>(productsList);
@@ -124,13 +151,15 @@ public class DisplayGui {
         listView.setOrientation(Orientation.VERTICAL);
         return listView;
     }
+    /**
+     * This method is responsible for displaying the product details.
+     * @param listView
+     * @param isCart
+     * This boolean is used to determine if the user is in the cart menu. Thus creating buttons and listener accordingly
+     */
     private void productDetails(ListView<Product> listView,boolean inCart){
         listView.setOnMouseClicked(e -> {
             Product product = listView.getSelectionModel().getSelectedItem();
-            if (product == null) {
-                //you click on empty space, you didn't click on a product/row
-                return;
-            }
             VBox productDetails = new VBox(8);
             Label category = new Label(product.getCategory());
             Label name = new Label(product.getName());
@@ -176,7 +205,10 @@ public class DisplayGui {
             }
         });
     }
-
+    /**
+     * This method is responsible for creating a VBox that contains the search page.
+     * @return searchBox
+     */
     public VBox search() {
         ObservableList<String> searchFilter = FXCollections.observableArrayList("Search By Name", "Search By Category", "Search By Price", "Search By Manufacturer");
         comboBox = new ComboBox<>(searchFilter);
@@ -193,7 +225,10 @@ public class DisplayGui {
         return searchBox;
 
     }
-
+    /**
+     * This method is responsible for creating a handler for the search button that is in the search menu.
+     * @return void
+     */
     private void searchButtonHandler() {
         this.searchButton.setOnAction(e -> {
             int index = comboBox.getSelectionModel().getSelectedIndex();
@@ -210,6 +245,10 @@ public class DisplayGui {
             productDetails(listView,false);
         });
     }
+    /**
+     * This method is responsible for creating a global handler for the menu buttons.
+     * @return cartBox
+     */
     private void buttonHandler(){
         this.menuButton.setOnAction(e -> {
             menuContainer.getChildren().clear();
@@ -228,9 +267,18 @@ public class DisplayGui {
             temp.getChildren().add(buttons);
         });
     }
+    /**
+     * This method is responsible for adding a product to the cart.
+     * @param product
+     * @return void
+     */
     private void addToCart(Product product){
         pl.addToCart(product);
     }
+    /**
+     * This method is responsible for creating a VBox that contains the cart page.
+     * @return cartBox
+     */
     private VBox cart(){
         Label header = new Label("Cart");
         ObservableList<Product> cart = FXCollections.observableArrayList(pl.getCart());

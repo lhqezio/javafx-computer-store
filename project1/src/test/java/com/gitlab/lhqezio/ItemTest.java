@@ -1,4 +1,10 @@
 package com.gitlab.lhqezio;
+
+/**
+ * Unit Test for Item class and its extended classes.
+ * @author Hoang
+ */
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

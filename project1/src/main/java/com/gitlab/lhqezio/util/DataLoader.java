@@ -1,4 +1,8 @@
 package com.gitlab.lhqezio.util;
+/**
+ * Abstract class that loads data from a file.
+ * @author Hoang
+ */
 
 import java.util.List;
 
