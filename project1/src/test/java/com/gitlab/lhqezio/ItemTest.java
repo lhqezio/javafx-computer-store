@@ -9,10 +9,11 @@ import com.gitlab.lhqezio.items.Laptop;
 import com.gitlab.lhqezio.items.Product;
 
 public class ItemTest {
-    final double DELTA = 1e-15;
+    private static final double DELTA = 1e-15;
+
     @Test
     public void computerObjTest(){
-        Computer computer = new Computer("Computer", "Apple", 1000, 0, 10, "A computer", "123", "Intel", "16GB", "HDD", "Nvidia", "Windows", 1000);
+        Computer computer = new Computer("Computer", "Apple", 1000, 0, 10, "A computer", "123", "Intel", "16GB", "HDD", 1000, "Nvidia", "Windows");
         assertEquals("Computer", computer.getName());
         assertEquals("Apple", computer.getManufacturer());
         assertEquals(1000, computer.getPrice(), DELTA);
@@ -30,7 +31,7 @@ public class ItemTest {
     }
     @Test
     public void laptopObjTest(){
-        Laptop laptop = new Laptop("Macbook Air", "Apple", 1000, 0, 10, "A laptop", "123", "Apple M1", "16GB", "NVMe", "7 Cores", "MacOS Ventura", 1000, 15);
+        Laptop laptop = new Laptop("Macbook Air", "Apple", 1000, 0, 10, "A laptop", "123", "Apple M1", "16GB", "NVMe", 1000, "7 Cores", "MacOS Ventura", 15);
         assertEquals("Macbook Air", laptop.getName());
         assertEquals("Apple", laptop.getManufacturer());
         assertEquals(1000, laptop.getPrice(), DELTA);
@@ -43,13 +44,13 @@ public class ItemTest {
         assertEquals("NVMe", laptop.getHardDrive());
         assertEquals("7 Cores", laptop.getGraphicsCard());
         assertEquals("MacOS Ventura", laptop.getOperatingSystem());
-        assertEquals(1000, laptop.getCapacity());  
+        assertEquals(1000, laptop.getCapacity());
         assertEquals(15, laptop.getBatteryLife());
         assertEquals("Laptop", laptop.getCategory());
     }
     @Test
     public void productObjTest(){
-        Product product = new Computer("Aspire 5", "Acer", 1000, 0, 10, "A computer", "123", "Intel", "16GB", "HDD", "Nvidia RTX 3050", "Windows", 1000);
+        Product product = new Computer("Aspire 5", "Acer", 1000, 0, 10, "A computer", "123", "Intel", "16GB", "HDD", 1000, "Nvidia RTX 3050", "Windows");
         assertEquals("Aspire 5", product.getName());
         assertEquals("Acer", product.getManufacturer());
         assertEquals(1000, product.getPrice(), DELTA);
@@ -58,9 +59,9 @@ public class ItemTest {
         assertEquals("A computer", product.getDescription());
         assertEquals("123", product.getID());
     }
-    @Test 
+    @Test
     public void itemObjTest(){
-        Item item = new Computer("Aspire 5", "Acer", 1000, 0, 10, "A computer", "123", "Intel", "16GB", "HDD", "Nvidia RTX 3050", "Windows", 1000);
+        Item item = new Computer("Aspire 5", "Acer", 1000, 0, 10, "A computer", "123", "Intel", "16GB", "HDD", 1000, "Nvidia RTX 3050", "Windows");
         assertEquals("Aspire 5", item.getName());
         assertEquals("Acer", item.getManufacturer());
         assertEquals("123", item.getID());

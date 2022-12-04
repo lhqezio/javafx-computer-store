@@ -3,9 +3,9 @@ package com.gitlab.lhqezio.items;
 public class Laptop extends Computer {
     private int batteryLife;
 
-    public Laptop(String name, String manufacturer, double price, double discount, int quantity, String description, String id, String processor, String ram, String hardDrive, String graphicsCard, String operatingSystem, int capacity, int batteryLife) {
-        super(name, manufacturer, price, discount, quantity, description, id, processor, ram, hardDrive, graphicsCard, operatingSystem, capacity);
-        this.batteryLife = batteryLife;
+    public Laptop(String name_, String manufacturer_, double price_, double discount_, int quantity_, String description_, String id_, String processor_, String ram_, String hardDrive_, int capacity_, String graphicsCard_, String operatingSystem_, int batteryLife_) {
+        super(name_, manufacturer_, price_, discount_, quantity_, description_, id_, processor_, ram_, hardDrive_, capacity_, graphicsCard_, operatingSystem_);
+        this.batteryLife = batteryLife_;
     }
 
     public int getBatteryLife() {

@@ -1,6 +1,11 @@
 package com.gitlab.lhqezio.util;
 
+import java.util.List;
+
+import com.gitlab.lhqezio.items.Product;
+import com.gitlab.lhqezio.user.UserData;
+
 public interface DataLoader {
-    public String[][] getUsersData();
-    public String[][] getProductsData();
+    public List<UserData> getUsersData();
+    public List<Product> getProductsData();
 }

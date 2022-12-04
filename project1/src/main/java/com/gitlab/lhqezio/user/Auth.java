@@ -5,24 +5,12 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 import com.gitlab.lhqezio.util.DataLoader;
-
-class UserData { //use this instead of String[3]
-
-    public String privilegeLevel;
-    public String hash;
-    public String salt;
-
-    public UserData(String privilegeLevel_, String hash_, String salt_) {
-        this.privilegeLevel = privilegeLevel_;
-        this.hash = hash_;
-        this.salt = salt_;
-    }
-}
 
 public class Auth {
 
@@ -33,10 +21,9 @@ public class Auth {
 
     public Auth(DataLoader dataLoader) {
 
-        String[][] allRowsArr = dataLoader.getUsersData();
-        for (int i = 0; i < allRowsArr.length; i++) {
-            String[] rowArr = allRowsArr[i];
-            this.byUsername.put(rowArr[0], new UserData(rowArr[1], rowArr[2], rowArr[3]));
+        List<UserData> userDataList = dataLoader.getUsersData();
+        for (UserData userData_ : userDataList) {
+            this.byUsername.put(userData_.getUsername(), userData_);
         }
     }
     /**
@@ -49,14 +36,14 @@ public class Auth {
         }
 
         Base64.Decoder dec = Base64.getDecoder();
-        KeySpec spec = new PBEKeySpec(password, dec.decode(userData_.salt), 65536, 512);
+        KeySpec spec = new PBEKeySpec(password, dec.decode(userData_.getSalt()), 65536, 512);
         SecretKeyFactory f;
         try {
             f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             byte[] hash = f.generateSecret(spec).getEncoded();
             Base64.Encoder enc = Base64.getEncoder();
-            if (enc.encodeToString(hash).equals(userData_.hash)) {
-                this.savedPrivilegeLevel = userData_.privilegeLevel;
+            if (enc.encodeToString(hash).equals(userData_.getHash())) {
+                this.savedPrivilegeLevel = userData_.getPrivilegeLevel();
                 this.savedUsername = username_;
                 return 0;
             } else {
