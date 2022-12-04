@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 /**
  * This class is responsible for displaying the GUI.
  * Scene Injections are used to display the different scenes.
@@ -49,6 +50,7 @@ public class DisplayGui {
     private HBox buttons;
     private ListView<Product> cartView;
     private Button checkout;
+
     /**
      * This constructor is responsible for initializing the GUI and the login page .
      * @param primaryStage
@@ -59,18 +61,17 @@ public class DisplayGui {
 
         Auth auth = new Auth(dataLoader);
         login.setOnAction(e -> {
-                int retVal = auth.check(this.getUsername(), this.getPassword().toCharArray());
-                if(retVal == 0){
-                    ProductsList pl = new ProductsList(dataLoader);
-                    primaryStage.setScene(this.menu(pl));
-                }
-                else{
-                    Group loginFailed = this.login();
-                    VBox v = (VBox)loginFailed.getChildren().get(0);
-                    v.getChildren().add(new Label("Login Failed"));
-                    primaryStage.setScene(new Scene(loginFailed));
-                }
-                primaryStage.show();
+            int retVal = auth.check(this.getUsername(), this.getPassword().toCharArray());
+            if (retVal == 0) {
+                ProductsList pl = new ProductsList(dataLoader);
+                primaryStage.setScene(this.menu(pl));
+            } else {
+                Group loginFailed = this.login();
+                VBox v = (VBox) loginFailed.getChildren().get(0);
+                v.getChildren().add(new Label("Login Failed"));
+                primaryStage.setScene(new Scene(loginFailed));
+            }
+            primaryStage.show();
         });
 
         this.checkout = new Button("Checkout");
@@ -84,6 +85,7 @@ public class DisplayGui {
         password = new PasswordField();
         buttonHandler();
     }
+
     /**
      * This method return a Group object that contains the login page.
      * @return Group
@@ -98,6 +100,7 @@ public class DisplayGui {
         Group root = new Group(vBox);
         return root;
     }
+
     /**
      *This method is resposible for getting the username password and login button from the login page.
      */
@@ -112,6 +115,7 @@ public class DisplayGui {
     public String getPassword() {
         return password.getText();
     }
+
     /**
      * This method is responsible for displaying the menu page.
      * @param pl
@@ -123,7 +127,7 @@ public class DisplayGui {
         Label header = new Label("Products Of The Day");
         ObservableList<Product> productsOfTheDay = FXCollections.observableArrayList(pl.getProductsOfTheDay());
         ListView<Product> listView = createProdList(productsOfTheDay);
-        productDetails(listView,false);
+        productDetails(listView, false);
 
         searchMenuButton.setOnAction(e -> {
             menuContainer.getChildren().clear();
@@ -142,27 +146,32 @@ public class DisplayGui {
         Scene scene = new Scene(root);
         return scene;
     }
+
     /**
      * This method is responsible for creating the listview of products.
      * @return listview
      */
-    private ListView<Product> createProdList(List<Product> products){
+    private ListView<Product> createProdList(List<Product> products) {
         ObservableList<Product> productsList = FXCollections.observableList(products);
         ListView<Product> listView = new ListView<>(productsList);
         listView.setPrefSize(200, 250);
         listView.setOrientation(Orientation.VERTICAL);
         return listView;
     }
+
     /**
      * This method is responsible for displaying the product details.
      * @param listView
      * @param isCart
      * This boolean is used to determine if the user is in the cart menu. Thus creating buttons and listener accordingly
      */
-    private void productDetails(ListView<Product> listView,boolean inCart){
+    private void productDetails(ListView<Product> listView, boolean inCart) {
         listView.setOnMouseClicked(e -> {
-            try{
-                Product product = listView.getSelectionModel().getSelectedItem();
+            Product product = listView.getSelectionModel().getSelectedItem();
+            if (product == null) {
+                //you clicked on empty space, you didn't click on a product/row
+                return;
+            }
             VBox productDetails = new VBox(8);
             Label category = new Label(product.getCategory());
             Label name = new Label(product.getName());
@@ -170,48 +179,46 @@ public class DisplayGui {
             Label rprice = new Label("ORIGINAL PRICE: " + String.valueOf(product.getPrice()) + "$");
             Label oprice = new Label("OUR PRICE: " + String.valueOf(product.getPrice() - product.getDiscount()) + "$");
             productDetails.getChildren().addAll(category, name, manu, rprice, oprice);
-            if(product.getCategory().equals("Computer")||product.getCategory().equals("Laptop")){
-                Label cpu = new Label("CPU: " + ((Computer)product).getProcessor());
-                Label ram = new Label("RAM: " + ((Computer)product).getRam());
-                Label hType = new Label("Storage Type: " + ((Computer)product).getHardDrive());
-                Label hSize = new Label("Storage Size: " + ((Computer)product).getCapacity());
-                Label gpu = new Label("GPU: " + ((Computer)product).getGraphicsCard());
-                Label os = new Label("OS: " + ((Computer)product).getOperatingSystem());
+            if (product.getCategory().equals("Computer") || product.getCategory().equals("Laptop")) {
+                Label cpu = new Label("CPU: " + ((Computer) product).getProcessor());
+                Label ram = new Label("RAM: " + ((Computer) product).getRam());
+                Label hType = new Label("Storage Type: " + ((Computer) product).getHardDrive());
+                Label hSize = new Label("Storage Size: " + ((Computer) product).getCapacity());
+                Label gpu = new Label("GPU: " + ((Computer) product).getGraphicsCard());
+                Label os = new Label("OS: " + ((Computer) product).getOperatingSystem());
                 productDetails.getChildren().addAll(cpu, ram, hType, hSize, gpu, os);
-                if(product.getCategory().equals("Laptop")){
-                    Label battery = new Label("Battery Hours: Up to " + ((Laptop)product).getBatteryLife()+" hours");
+                if (product.getCategory().equals("Laptop")) {
+                    Label battery = new Label("Battery Hours: Up to " + ((Laptop) product).getBatteryLife() + " hours");
                     productDetails.getChildren().addAll(battery);
                 }
             }
-            if(!inCart){
-                int availableqty = product.getQuantity()-pl.getCartQuantity(product);
-                Label desc = new Label("Description: "+product.getDescription());
-                if(availableqty==0){
+            if (!inCart) {
+                int availableqty = product.getQuantity() - pl.getCartQuantity(product);
+                Label desc = new Label("Description: " + product.getDescription());
+                if (availableqty == 0) {
                     Label status = new Label("OOS");
-                    productDetails.getChildren().addAll(desc,status);
-                }
-                else{
+                    productDetails.getChildren().addAll(desc, status);
+                } else {
                     Button addToCart = new Button("Add To Cart");
                     addToCart.setOnAction(e1 -> {
                         addToCart(product);
-                        int curAvQty = product.getQuantity()-pl.getCartQuantity(product);
-                        if (curAvQty == 0 ){
+                        int curAvQty = product.getQuantity() - pl.getCartQuantity(product);
+                        if (curAvQty == 0) {
                             productDetails.getChildren().remove(6);
                             Label status = new Label("OOS");
                             productDetails.getChildren().add(status);
                         }
                     });
-                    productDetails.getChildren().addAll(desc,addToCart);
+                    productDetails.getChildren().addAll(desc, addToCart);
                 }
-            }
-            else {
+            } else {
                 Button removeFromCart = new Button("Remove From Cart");
                 removeFromCart.setOnAction(e1 -> {
                     pl.removeFromCart(product);
                     cartButton.fire();
                 });
-                Label inCartQty = new Label("In Cart: "+String.valueOf(pl.getCartQuantity(product)));
-                productDetails.getChildren().addAll(removeFromCart,inCartQty);
+                Label inCartQty = new Label("In Cart: " + String.valueOf(pl.getCartQuantity(product)));
+                productDetails.getChildren().addAll(removeFromCart, inCartQty);
             }
             productDetails.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
             if (menuContainer.getChildren().size() == 1) {
@@ -219,12 +226,10 @@ public class DisplayGui {
             } else {
                 menuContainer.getChildren().set(1, productDetails);
             }
-            }
-            catch(NullPointerException ex){
-                return;
-            }
+
         });
     }
+
     /**
      * This method is responsible for creating a VBox that contains the search page.
      * @return searchBox
@@ -245,6 +250,7 @@ public class DisplayGui {
         return searchBox;
 
     }
+
     /**
      * This method is responsible for creating a handler for the search button that is in the search menu.
      * @return void
@@ -262,20 +268,21 @@ public class DisplayGui {
             } else {
                 searchBox.getChildren().set(3, listView);
             }
-            productDetails(listView,false);
+            productDetails(listView, false);
         });
     }
+
     /**
      * This method is responsible for creating a global handler for the menu buttons.
      * @return cartBox
      */
-    private void buttonHandler(){
+    private void buttonHandler() {
         this.menuButton.setOnAction(e -> {
             menuContainer.getChildren().clear();
             menuContainer.getChildren().addAll(menu);
             buttons.getChildren().clear();
             buttons.getChildren().addAll(cartButton, searchMenuButton);
-            VBox temp = (VBox)menuContainer.getChildren().get(0);
+            VBox temp = (VBox) menuContainer.getChildren().get(0);
             temp.getChildren().add(buttons);
         });
         this.cartButton.setOnAction(e -> {
@@ -283,33 +290,35 @@ public class DisplayGui {
             menuContainer.getChildren().addAll(cart());
             buttons.getChildren().clear();
             buttons.getChildren().addAll(menuButton, searchMenuButton, checkout);
-            VBox temp = (VBox)menuContainer.getChildren().get(0);
+            VBox temp = (VBox) menuContainer.getChildren().get(0);
             temp.getChildren().add(buttons);
         });
     }
+
     /**
      * This method is responsible for adding a product to the cart.
      * @param product
      * @return void
      */
-    private void addToCart(Product product){
+    private void addToCart(Product product) {
         pl.addToCart(product);
     }
+
     /**
      * This method is responsible for creating a VBox that contains the cart page.
      * @return cartBox
      */
-    private VBox cart(){
+    private VBox cart() {
         Label header = new Label("Cart");
         ObservableList<Product> cart = FXCollections.observableArrayList(pl.getCart());
         cartView = createProdList(cart);
-        productDetails(cartView,true);
+        productDetails(cartView, true);
         buttons.getChildren().clear();
         buttons.getChildren().addAll(menuButton);
         VBox cartBox = new VBox(8);
         cartBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
-        Label total = new Label("Total: "+String.valueOf(pl.getTotal())+"$\n"+"Total Qty: "+String.valueOf(pl.getQty()));
-        cartBox.getChildren().addAll(header, cartView,checkout,total);
+        Label total = new Label("Total: " + String.valueOf(pl.getTotal()) + "$\n" + "Total Qty: " + String.valueOf(pl.getQty()));
+        cartBox.getChildren().addAll(header, cartView, checkout, total);
         return cartBox;
     }
 }
