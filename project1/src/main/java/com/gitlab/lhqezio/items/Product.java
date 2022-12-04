@@ -3,46 +3,30 @@ package com.gitlab.lhqezio.items;
 public abstract class Product extends Item {
     private double price;
     private int quantity;
-    private String description;
     private double discount;
-    private int cartQuantity;
 
-    public Product(String name, String manufacturer, double price, double discount, int quantity, String description, String id) {
-        super(name, manufacturer, description, id);
-        this.price = price;
-        this.quantity = quantity;
-        this.description = description;
-        this.discount = discount;
-        this.cartQuantity = 0;
+    public Product(int id_, String name_, String manufacturer_, String description_, double price_, double discount_, int quantity_) {
+        super(id_, name_, manufacturer_, description_);
+        this.price = price_;
+        this.discount = discount_;
+        this.quantity = quantity_;
     }
 
     public double getPrice() {
         return price;
     }
 
-    ;
+    public double getDiscount() {
+        return discount;
+    }
 
     public int getQuantity() {
         return quantity;
     }
 
-    ;
-
-    public String getDescription() {
-        return description;
-    }
-
-    ;
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    ;
-
     @Override
     public String toString() {
-        return getManufacturer() + " " + getName() + "\n" + Math.round(getPrice()) +"$  NOW ONLY: "+ Math.round(getPrice()-getDiscount())+"$\n"+getDiscountPercentage()+"% OFF"+ "\n" + getDescription() + "\n";
+        return getManufacturer() + " " + getName() + "\n" + Math.round(getPrice()) + "$  NOW ONLY: " + Math.round(getPrice() - getDiscount()) + "$\n" + getDiscountPercentage() + "% OFF" + "\n" + getDescription() + "\n";
     }
 
     public abstract String getCategory();
@@ -54,5 +38,12 @@ public abstract class Product extends Item {
     public int discountCompareTo(Product other) {
         return this.getDiscountPercentage() < other.getDiscountPercentage() ? 1 : -1;
     }
-}
 
+    public Product createCopy() {
+        return null;
+    }
+
+    public Product productConstructor(int id_, String name_, String manufacturer_, String description_, double price_, double discount_, int quantity_) {
+        return null;
+    }
+}

@@ -30,7 +30,7 @@ public class ProductListTest {
             assertEquals(p1.getDiscount(), p2.getDiscount(), DELTA);
             assertEquals(p1.getQuantity(), p2.getQuantity());
             assertEquals(p1.getDescription(), p2.getDescription());
-            assertEquals(p1.getID(), p2.getID());
+            assertEquals(p1.getId(), p2.getId());
         }
     }
 

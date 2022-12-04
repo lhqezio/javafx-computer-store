@@ -73,6 +73,7 @@ public class Display {
         System.out.println(searchPage);
         Scanner sc = new Scanner(System.in);
         char input = sc.next().charAt(0);
+        sc.close();
         System.out.println(input);
         searchSpecificPage(input);
         return input;

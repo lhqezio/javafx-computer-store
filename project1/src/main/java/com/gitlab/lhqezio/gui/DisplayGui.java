@@ -1,7 +1,6 @@
 package com.gitlab.lhqezio.gui;
 
 import java.util.List;
-
 import com.gitlab.lhqezio.items.Product;
 import com.gitlab.lhqezio.user.Auth;
 import com.gitlab.lhqezio.util.DataLoader;
@@ -29,7 +28,7 @@ public class DisplayGui {
     private PasswordField password;
     private HBox menuContainer;
     private Button searchButton;
-    private ComboBox comboBox;
+    private ComboBox<String> comboBox;
     private TextField searchField;
     private VBox searchBox;
     private VBox menu;
@@ -38,7 +37,7 @@ public class DisplayGui {
     private Button cartButton = new Button("Cart");
     private HBox buttons;
     private ListView<Product> cartView;
-    private Button checkout = new Button("Checkout");
+    private Button checkout;
 
     public DisplayGui(Stage primaryStage, DataLoader dataLoader) {
         login = new Button("Login");
@@ -57,6 +56,13 @@ public class DisplayGui {
                     primaryStage.setScene(new Scene(loginFailed));
                 }
                 primaryStage.show();
+        });
+
+        this.checkout = new Button("Checkout");
+        this.checkout.setOnAction(e -> {
+            dataLoader.updateRowsAndSave(pl.getQuantitySubtractedProducts(), pl.getList());
+            pl.emptyCart();
+            primaryStage.setScene(this.menu(this.pl));
         });
 
         username = new TextField();
@@ -91,9 +97,9 @@ public class DisplayGui {
         this.pl = products;
         Label header = new Label("Products Of The Day");
         ObservableList<Product> productsOfTheDay = FXCollections.observableArrayList(pl.getProductsOfTheDay());
-        ListView<Product>listView = createProdList(productsOfTheDay);
+        ListView<Product> listView = createProdList(productsOfTheDay);
         productDetails(listView,false);
-        
+
         searchMenuButton.setOnAction(e -> {
             menuContainer.getChildren().clear();
             menuContainer.getChildren().addAll(search());
@@ -120,8 +126,12 @@ public class DisplayGui {
     }
     private void productDetails(ListView<Product> listView,boolean inCart){
         listView.setOnMouseClicked(e -> {
-            VBox productDetails = new VBox(8);
             Product product = listView.getSelectionModel().getSelectedItem();
+            if (product == null) {
+                //you click on empty space, you didn't click on a product/row
+                return;
+            }
+            VBox productDetails = new VBox(8);
             Label category = new Label(product.getCategory());
             Label name = new Label(product.getName());
             Label manu = new Label(product.getManufacturer());
@@ -169,7 +179,7 @@ public class DisplayGui {
 
     public VBox search() {
         ObservableList<String> searchFilter = FXCollections.observableArrayList("Search By Name", "Search By Category", "Search By Price", "Search By Manufacturer");
-        comboBox = new ComboBox(searchFilter);
+        comboBox = new ComboBox<>(searchFilter);
         searchField = new TextField();
         searchField.setPromptText("Enter Keyword");
         this.searchButton = new Button("Search");

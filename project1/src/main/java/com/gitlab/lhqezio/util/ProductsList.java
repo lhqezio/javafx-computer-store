@@ -5,18 +5,16 @@ import com.gitlab.lhqezio.items.Product;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductsList {
     private List<Product> products;
-    private List<Product> cart;
-    private ArrayList<Integer> cartQuantity;
+    private Map<Product, IntCell> cartQuantityMap = new HashMap<>();
     private HashMap<String, HashMap<String, List<Product>>> productsDictionary;
 
     public ProductsList(DataLoader dataLoader) {
         this.products = dataLoader.getProductsData();
         initProductDictionary();
-        cart = new ArrayList<Product>();
-        cartQuantity = new ArrayList<Integer>();
     }
 
     public List<Product> getProductsOfTheDay() {
@@ -119,51 +117,67 @@ public class ProductsList {
     public List<Product> getList(){
         return this.products;
     }
+
+    public Map<Product, IntCell> getCartQuantityMap() {
+        return cartQuantityMap;
+    }
+
     public void addToCart(Product product){
-        if(cart.contains(product)){
-            int itemPos = cart.indexOf(product);
-            int b = cartQuantity.get(itemPos);
-            cartQuantity.set(itemPos, b+1);
-        }
-        else{
-            cart.add(product);
-            cartQuantity.add(1);
+
+        IntCell cell = cartQuantityMap.get(product);
+        if (cell == null) {
+            cartQuantityMap.put(product, new IntCell(1));
+        } else {
+            cell.value = cell.value + 1;
         }
     }
     public void removeFromCart(Product product){
-        if(cart.size() > 0){
-            int itemPos = cart.indexOf(product);
-            int b = cartQuantity.get(itemPos);
-            if(b > 1){
-                cartQuantity.set(itemPos, b-1);
-            }
-            else{
-                cart.remove(itemPos);
-                cartQuantity.remove(itemPos);
-            }
+        IntCell cell = cartQuantityMap.get(product);
+        if (cell.value == 1) {
+            cartQuantityMap.remove(product);
+        } else {
+            cell.value = cell.value - 1;
         }
     }
+    public void emptyCart(){
+        cartQuantityMap.clear();
+    }
+
     public List<Product> getCart(){
-        return this.cart;
+        return new ArrayList<Product>(this.cartQuantityMap.keySet());
     }
-    public int getCartQuantity(Product product){
-        if(cart.contains(product)){
-            int itemPos = cart.indexOf(product);
-            return cartQuantity.get(itemPos);
+
+    public List<Product> getQuantitySubtractedProducts() {
+        List<Product> quantitySubtractedProducts = new ArrayList<>();
+        for (Map.Entry<Product, IntCell> entry : cartQuantityMap.entrySet()) {
+            Product product_ = entry.getKey();
+            int newQuantity = product_.getQuantity() - entry.getValue().value;
+            Product productCopy = product_.productConstructor(product_.getId(), product_.getName(), product_.getManufacturer(), product_.getDescription(), product_.getPrice(), product_.getDiscount(), newQuantity);
+            quantitySubtractedProducts.add(productCopy);
         }
-        return 0;
+        return quantitySubtractedProducts;
+    }
+
+    public int getCartQuantity(Product product){
+        IntCell cell = cartQuantityMap.get(product);
+        if (cell == null) {
+            return 0;
+        } else {
+            return cell.value;
+        }
     }
     public int getQty(){
         int qty = 0;
-        for(int i = 0; i < cartQuantity.size(); i++){
-            qty += cartQuantity.get(i);
+        for (Map.Entry<Product, IntCell> entry : cartQuantityMap.entrySet()) {
+            qty += entry.getValue().value;
         }
         return qty;
     }
     public double getTotal(){
         double total = 0;
-        for(int i = 0; i < cart.size(); i++){
-            total += (cart.get(i).getPrice()-cart.get(i).getDiscount()) * cartQuantity.get(i);
+        for (Map.Entry<Product, IntCell> entry : cartQuantityMap.entrySet()) {
+            Product product_ = entry.getKey();
+            total += (product_.getPrice() - product_.getDiscount()) * entry.getValue().value;
         }
         return total;
     }
