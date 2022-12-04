@@ -161,7 +161,8 @@ public class DisplayGui {
      */
     private void productDetails(ListView<Product> listView,boolean inCart){
         listView.setOnMouseClicked(e -> {
-            Product product = listView.getSelectionModel().getSelectedItem();
+            try{
+                Product product = listView.getSelectionModel().getSelectedItem();
             VBox productDetails = new VBox(8);
             Label category = new Label(product.getCategory());
             Label name = new Label(product.getName());
@@ -217,6 +218,10 @@ public class DisplayGui {
                 menuContainer.getChildren().add(productDetails);
             } else {
                 menuContainer.getChildren().set(1, productDetails);
+            }
+            }
+            catch(NullPointerException ex){
+                return;
             }
         });
     }
