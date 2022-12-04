@@ -72,20 +72,17 @@ public class ProductsList {
     }
 
     public List<Product> filterBy(char selection, String keyword) {
-        System.out.println("selection: " + selection + " keyword: " + keyword);
         String[] keywords = keyword.split(";");
         List<Product> filteredProducts = new ArrayList<>();
         switch (selection) {
             case '1':
                 for (String key : productsDictionary.get("Name").keySet()) {
                     for (String keyword_ : keywords) {
-                        System.out.println("key: " + key + " keyword: " + keyword_);
                         if (key.toLowerCase().contains(keyword_.toLowerCase())) {
                             filteredProducts.addAll(productsDictionary.get("Name").get(key));
                         }
                     }
                 }
-                System.out.println("filteredProducts: " + filteredProducts);
                 break;
             case '2':
                 for (String key : productsDictionary.get("Category").keySet()) {
