@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "project1/com.gitlab.lhqezio.App",
+            "projectName": "project1"
+        }
+    ]
+}

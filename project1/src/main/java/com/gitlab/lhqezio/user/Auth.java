@@ -1,31 +1,20 @@
 package com.gitlab.lhqezio.user;
+/**
+ * Auth class used to authenticate user.
+ * @author Fu Pei
+ */
 
-import java.io.Console;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import com.gitlab.lhqezio.util.CSV_Util;
-
-class UserData { //use this instead of String[3]
-
-    public String privilegeLevel;
-    public String hash;
-    public String salt;
-
-    public UserData(String privilegeLevel_, String hash_, String salt_) {
-        this.privilegeLevel = privilegeLevel_;
-        this.hash = hash_;
-        this.salt = salt_;
-    }
-}
+import com.gitlab.lhqezio.util.DataLoader;
 
 public class Auth {
 
@@ -34,19 +23,16 @@ public class Auth {
     private String savedPrivilegeLevel;
     private String savedUsername;
 
-    public Auth() {
-        Path csvPath = CSV_Util.getCsvFilePath("users.csv");
-        try {
-            String[][] allRowsArr = CSV_Util.parseCSV(CSV_Util.readBytesAdd2Newline(csvPath));
-            for (int i = 0; i < allRowsArr.length; i++) {
-                String[] rowArr = allRowsArr[i];
-                this.byUsername.put(rowArr[0], new UserData(rowArr[1], rowArr[2], rowArr[3]));
-            }
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+    public Auth(DataLoader dataLoader) {
+
+        List<UserData> userDataList = dataLoader.getUsersData();
+        for (UserData userData_ : userDataList) {
+            this.byUsername.put(userData_.getUsername(), userData_);
         }
     }
-
+    /**
+     * @return 0 if login successful, 2 if password incorrect, 1 if username not found
+     */
     public int check(String username_, char[] password) {
         UserData userData_ = this.byUsername.get(username_);
         if (userData_ == null) {
@@ -54,14 +40,14 @@ public class Auth {
         }
 
         Base64.Decoder dec = Base64.getDecoder();
-        KeySpec spec = new PBEKeySpec(password, dec.decode(userData_.salt), 65536, 512);
+        KeySpec spec = new PBEKeySpec(password, dec.decode(userData_.getSalt()), 65536, 512);
         SecretKeyFactory f;
         try {
             f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             byte[] hash = f.generateSecret(spec).getEncoded();
             Base64.Encoder enc = Base64.getEncoder();
-            if (enc.encodeToString(hash).equals(userData_.hash)) {
-                this.savedPrivilegeLevel = userData_.privilegeLevel;
+            if (enc.encodeToString(hash).equals(userData_.getHash())) {
+                this.savedPrivilegeLevel = userData_.getPrivilegeLevel();
                 this.savedUsername = username_;
                 return 0;
             } else {
@@ -81,23 +67,6 @@ public class Auth {
                 return new NormalUser(this.savedUsername);
         }
         return null;
-    }
-    public void login(){
-        Console myConsole = System.console();
-        String username;
-        while (true) {
-            System.out.println("Enter your username:");
-            username = myConsole.readLine();
-            System.out.println("Enter your password:");
-            char[] password_ = myConsole.readPassword();
-            int retValue = this.check(username, password_);
-            //do NOT tell users that their username is incorrect, you can find users that way, usually there's a "forgot username" button, send email
-            if (retValue != 0) {
-                System.out.println("incorrect credentials, try again");
-                continue;
-            }
-            break;
-        }
     }
 
 }

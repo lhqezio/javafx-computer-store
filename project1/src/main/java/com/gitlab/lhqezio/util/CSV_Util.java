@@ -1,6 +1,8 @@
 package com.gitlab.lhqezio.util;
-
-import java.io.File;
+/**
+ * CSV_Util class, used to read and write CSV files. And various other utilities
+ * @author Fu Pei
+ */
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
@@ -9,76 +11,81 @@ import java.nio.file.Path;
 
 public class CSV_Util {
 
-    public static String[][] parseCSV(byte[] buf) {
+    public static int[] parseCSV_getRowCol(byte[] buf) {
         // get length
         int colCount = 0;
 
-        int c_ = 0;
-        byte char_ = buf[c_];
-        outer: while (true) {
-            switch (char_) {
+        int c = 0;
+        byte character = buf[c];
+        outer:
+        while (true) {
+            switch (character) {
                 case '"':
-                    c_++;
-                    char_ = buf[c_];
+                    c++;
+                    character = buf[c];
                     while (true) {
-                        switch (char_) {
+                        switch (character) {
                             case '"':
-                                byte nextChar = buf[c_ + 1];
+                                byte nextChar = buf[c + 1];
                                 if (nextChar == '"') {
-                                    c_ += 2;
-                                    char_ = buf[c_];
+                                    c += 2;
+                                    character = buf[c];
                                     continue;
                                 } else {
                                     colCount++;
                                     if (nextChar == '\n') {
                                         break outer;
                                     }
-                                    c_ += 2;
-                                    char_ = buf[c_];
+                                    c += 2;
+                                    character = buf[c];
                                     continue outer;
                                 }
                         }
-                        c_++;
-                        char_ = buf[c_];
+                        c++;
+                        character = buf[c];
                     }
                 default:
-                    outer2: while (true) {
-                        switch (char_) {
+                    outer2:
+                    while (true) {
+                        switch (character) {
                             case '\n':
                                 colCount++;
-                                c_++;
-                                char_ = buf[c_];
+                                c++;
+                                character = buf[c];
 
                                 break outer;
                             case ',':
                                 colCount++;
-                                c_++;
-                                char_ = buf[c_];
+                                c++;
+                                character = buf[c];
                                 break outer2;
                         }
-                        c_++;
-                        char_ = buf[c_];
+                        c++;
+                        character = buf[c];
                     }
             }
         }
 
         int linesCount = 2;
-        while (c_ < buf.length) {
-            if (buf[c_] == '\n') {
+        while (c < buf.length) {
+            if (buf[c] == '\n') {
                 linesCount++;
             }
-            c_++;
+            c++;
         }
         int trailingNewlines = 2;
-        c_ = buf.length - 3;
-        while (buf[c_] == '\n') {
+        c = buf.length - 3;
+        while (buf[c] == '\n') {
             trailingNewlines++;
-            c_--;
+            c--;
         }
         int rowCount = linesCount - trailingNewlines;
+        return new int[]{rowCount, colCount};
+    }
 
-        // System.out.println(colCount);
-        // System.out.println(rowCount);
+    public static String[][] parseCSV_fromRowCol(byte[] buf, int[] rowCol) {
+        int rowCount = rowCol[0];
+        int colCount = rowCol[1];
 
         String[][] allRowsArr = new String[rowCount][];
         String[] rowArr = new String[colCount];
@@ -88,32 +95,33 @@ public class CSV_Util {
         int fieldIdx = 0;
 
         try {
-            c_ = 0;
-            char_ = buf[c_];
+            int c = 0;
+            int character = buf[c];
             int cBak;
-            outer: while (true) {
-                switch (char_) {
+            outer:
+            while (true) {
+                switch (character) {
                     case '"':
-                        c_++;
-                        cBak = c_;
-                        char_ = buf[c_];
+                        c++;
+                        cBak = c;
+                        character = buf[c];
                         while (true) {
-                            switch (char_) {
+                            switch (character) {
                                 case '"':
-                                    byte nextChar = buf[c_ + 1];
+                                    byte nextChar = buf[c + 1];
                                     if (nextChar == '"') {
-                                        c_ += 2;
-                                        char_ = buf[c_];
+                                        c += 2;
+                                        character = buf[c];
                                         continue;
                                     } else {
-                                        String field_ = new String(buf, cBak, c_ - cBak, "UTF-8");
+                                        String field_ = new String(buf, cBak, c - cBak, "UTF-8");
                                         String escapedField = field_.replace("\"\"", "\"");
                                         rowArr[fieldIdx] = escapedField;
                                         fieldIdx++;
 
-                                        c_ += 2;
+                                        c += 2;
                                         if (nextChar == '\n') {
-                                            if (buf[c_] == '\n') {
+                                            if (buf[c] == '\n') {
                                                 break outer;
                                             } else {
                                                 rowArr = new String[colCount];
@@ -122,26 +130,27 @@ public class CSV_Util {
                                                 rowsIdx++;
                                             }
                                         }
-                                        char_ = buf[c_];
+                                        character = buf[c];
                                         continue outer;
                                     }
                             }
-                            c_++;
-                            char_ = buf[c_];
+                            c++;
+                            character = buf[c];
                         }
                     default:
-                        cBak = c_;
-                        outer2: while (true) {
-                            switch (char_) {
+                        cBak = c;
+                        outer2:
+                        while (true) {
+                            switch (character) {
                                 case '\n': {
-                                    String field_ = new String(buf, cBak, c_ - cBak, "UTF-8");
+                                    String field_ = new String(buf, cBak, c - cBak, "UTF-8");
                                     rowArr[fieldIdx] = field_;
                                     fieldIdx++;
 
-                                    c_++;
-                                    char_ = buf[c_];
+                                    c++;
+                                    character = buf[c];
 
-                                    if (char_ == '\n') {
+                                    if (character == '\n') {
                                         break outer;
                                     }
                                     rowArr = new String[colCount];
@@ -151,26 +160,29 @@ public class CSV_Util {
                                     break outer2;
                                 }
                                 case ',': {
-                                    String field_ = new String(buf, cBak, c_ - cBak, "UTF-8");
+                                    String field_ = new String(buf, cBak, c - cBak, "UTF-8");
                                     rowArr[fieldIdx] = field_;
                                     fieldIdx++;
 
-                                    c_++;
-                                    char_ = buf[c_];
+                                    c++;
+                                    character = buf[c];
                                     break outer2;
                                 }
                             }
-                            c_++;
-                            char_ = buf[c_];
+                            c++;
+                            character = buf[c];
                         }
                 }
             }
             return allRowsArr;
         } catch (Exception e) {
             System.out.println(e);
-            return new String[][] {};
+            return new String[][]{};
         }
+    }
 
+    public static String[][] parseCSV(byte[] buf) {
+        return parseCSV_fromRowCol(buf, parseCSV_getRowCol(buf));
     }
 
     public static byte[] readBytesAdd2Newline(Path path) throws IOException {
@@ -204,16 +216,5 @@ public class CSV_Util {
             return new byte[0];
         }
     }
-    private static File getGitIgnoreDir() {
-        File dir_ = new File(System.getProperty("user.dir"));
-        while (!(new File(dir_, ".gitignore")).exists()) {
-            dir_ = dir_.getParentFile();
-        }
-        return dir_;
-    }
-    public static Path getCsvFilePath(String fileName) {
-        File dir_ = getGitIgnoreDir();
-        File csvFile = new File(dir_, fileName);
-        return csvFile.toPath();
-    }
+
 }
