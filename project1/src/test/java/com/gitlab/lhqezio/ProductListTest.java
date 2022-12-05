@@ -61,13 +61,12 @@ public class ProductListTest {
 
     @Test
     public void searchByCategoryTest() {
-        // to be fixed
         DataLoader dataLoader = new CsvLoader(Paths.get("test_csv_files"));
         ProductsList prods = new ProductsList(dataLoader);
-        List<Product> result = prods.filterBy('2', "Computer");
-        assertEquals(result.size(), 4);
-        assertEquals(result.get(0).getName(), "Alienware X51");
-        assertEquals("Dell", result.get(0).getManufacturer());
+        List<Product> result = prods.filterBy('2', "Laptop");
+        assertEquals(result.size(), 2);
+        assertEquals(result.get(0).getName(), "IdeaPad 5X");
+        assertEquals("Lenovo", result.get(0).getManufacturer());
     }
 
     @Test
