@@ -29,7 +29,7 @@ public class DataLoaderTest {
         Computer firstProduct = (Computer)products.get(0);
         Computer expected = new Computer(0,"iMac Pro","Apple","Thin And Light",2000,500,10,"Intel Core i7","16GB","NVMe",1000,"Nvidia GTX 1050","Windows 10");
 
-        //I'm not gonna write add an equals method to the Object
+        //I'm not gonna write and add an equals method to the Object
         assertEquals(firstProduct.getId(), expected.getId());
         assertEquals(firstProduct.getName(), expected.getName());
         assertEquals(firstProduct.getManufacturer(), expected.getManufacturer());
